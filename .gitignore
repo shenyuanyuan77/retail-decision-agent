@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+backend/data_local/
+*.db
+*.db-shm
+*.db-wal
+.zcode/
+node_modules/
+public/
+web/screenshot_*.png

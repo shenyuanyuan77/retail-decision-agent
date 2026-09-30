@@ -1,0 +1,52 @@
+# 常见根因库（诊断层消费：假设验证 + 根因命名 + 证据类型）
+root_causes:
+  - code: stockout
+    name: 缺货
+    description: 门店库存为0或低于安全库存，无法满足需求
+    evidence_types: [inventory_zero, below_safety, stockout_ticket, overdue_replenishment]
+    typical_actions: [replenish, transfer]
+  - code: supply_delay
+    name: 供应链延迟
+    description: 补货单逾期未到货
+    evidence_types: [overdue_replenishment]
+    typical_actions: [replenish, cs_followup]
+  - code: promo
+    name: 自有促销拉动
+    description: 本店促销活动导致销量上升
+    evidence_types: [active_campaign, promo_flag, member_share_up]
+    typical_actions: [replenish, member_reach]
+  - code: competitor_promo
+    name: 竞品促销分流
+    description: 竞品同品类促销抢走客流
+    evidence_types: [competitor_promo_active, category_sales_down]
+    typical_actions: [promo, member_reach]
+  - code: weather
+    name: 天气影响
+    description: 天气突变导致品类需求偏移
+    evidence_types: [weather_anomaly, category_sales_shift]
+    typical_actions: [transfer, replenish]
+  - code: complaint
+    name: 客诉/口碑恶化
+    description: 临期、质量等客诉上升导致购买意愿下降
+    evidence_types: [ticket_surge, complaint_rate_up]
+    typical_actions: [cs_followup, promo]
+  - code: near_expiry
+    name: 临期未处置
+    description: 临期库存未折价出清
+    evidence_types: [expiry_date_close, no_discount_campaign]
+    typical_actions: [promo, member_reach]
+  - code: member_churn
+    name: 会员流失
+    description: 门店会员复购率显著下滑
+    evidence_types: [repurchase_down, member_qty_share_down]
+    typical_actions: [member_reach, promo]
+  - code: price_change
+    name: 价格变化
+    description: 售价上调导致销量下降
+    evidence_types: [unit_price_up]
+    typical_actions: [promo]
+  - code: display
+    name: 陈列/位置变化
+    description: 货架陈列调整影响曝光（无系统数据佐证时默认低置信）
+    evidence_types: [manual_note]
+    typical_actions: []

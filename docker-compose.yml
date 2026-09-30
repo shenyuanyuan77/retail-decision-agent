@@ -1,0 +1,33 @@
+services:
+  bootstrap:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: python -m app.bootstrap --days 180 --stores 50 --skus 500 --seed 42
+    volumes:
+      - retail-data:/data_local
+    environment:
+      RETAIL_DB: /data_local/retail.db
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    depends_on:
+      bootstrap:
+        condition: service_completed_successfully
+    ports:
+      - "8300:8300"
+    volumes:
+      - retail-data:/data_local
+    environment:
+      RETAIL_DB: /data_local/retail.db
+      # 可选 LLM 叙述（OpenAI 兼容接口；不配置则使用模板叙述器）
+      LLM_BASE_URL: ${LLM_BASE_URL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-gpt-4o-mini}
+      # 每小时自动感知扫描（可选）
+      RETAIL_SCHEDULER: "0"
+
+volumes:
+  retail-data:

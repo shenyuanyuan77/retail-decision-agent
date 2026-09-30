@@ -1,0 +1,279 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - link "零售决策" [ref=e3] [cursor=pointer]:
+      - /url: "#/overview"
+    - link "总览 D" [ref=e7] [cursor=pointer]:
+      - /url: "#/overview"
+      - generic [ref=e10]: 总览
+      - generic [ref=e11]: D
+    - link "异常 99+" [ref=e80] [cursor=pointer]:
+      - /url: "#/anomalies"
+      - generic [ref=e16]: 异常
+      - generic [ref=e81]: 99+
+    - link "决策" [ref=e17] [cursor=pointer]:
+      - /url: "#/decisions"
+    - link "审批 3" [ref=e82] [cursor=pointer]:
+      - /url: "#/approvals"
+      - generic [ref=e25]: 审批
+      - generic [ref=e83]: "3"
+    - link "执行" [ref=e26] [cursor=pointer]:
+      - /url: "#/executions"
+    - link "审计" [ref=e30] [cursor=pointer]:
+      - /url: "#/audit"
+    - link "复盘" [ref=e35] [cursor=pointer]:
+      - /url: "#/reviews"
+    - link "世界" [ref=e39] [cursor=pointer]:
+      - /url: "#/world"
+    - button "收起" [ref=e45] [cursor=pointer]
+  - generic [ref=e49]:
+    - banner [ref=e50]:
+      - generic [ref=e51]:
+        - generic [ref=e52]: Dashboards
+        - generic [ref=e53]: ›
+        - generic [ref=e54]: 经营总览
+        - generic [ref=e84]: 业务日期 2026-10-06 · 待处理异常 788 · 待审批 3
+      - generic "目标—感知—诊断—决策—执行—治理—评估 闭环" [ref=e55]:
+        - generic [ref=e56]: 目标
+        - generic [ref=e57]: ›
+        - generic [ref=e58]: 感知
+        - generic [ref=e59]: ›
+        - generic [ref=e60]: 诊断
+        - generic [ref=e61]: ›
+        - generic [ref=e62]: 决策
+        - generic [ref=e63]: ›
+        - generic [ref=e64]: 执行
+        - generic [ref=e65]: ›
+        - generic [ref=e66]: 治理
+        - generic [ref=e67]: ›
+        - generic [ref=e68]: 评估
+      - generic [ref=e69]:
+        - combobox "时间范围" [ref=e70]:
+          - option "最近 7 天"
+          - option "最近 14 天"
+          - option "最近 30 天" [selected]
+        - button "刷新面板" [ref=e71] [cursor=pointer]
+        - combobox "当前身份（演示 token）" [ref=e74]:
+          - option "风控审批人（L3）" [selected]
+          - option "供应链计划员（L2）"
+          - option "会员运营（L2）"
+          - option "区域经理（L2）"
+          - option "门店店长（L2）"
+          - option "总部运营（L2）"
+          - option "Agent 服务身份"
+        - button "▶ 感知扫描" [ref=e75] [cursor=pointer]
+        - button "⚡ 运行流水线" [ref=e76] [cursor=pointer]
+    - main [ref=e77]:
+      - generic [ref=e85]:
+        - generic [ref=e87]:
+          - generic [ref=e88]: 销售额 · 7d
+          - generic [ref=e89]: ¥5,045,753
+          - generic [ref=e90]: ▲ 36% vs 前7天
+        - generic [ref=e96]:
+          - generic [ref=e97]: 销量 · 7d
+          - generic [ref=e98]: 172,460件
+        - generic [ref=e104]:
+          - generic [ref=e105]: 毛利率 · 7d
+          - generic [ref=e106]: 27.71%
+          - generic [ref=e107]: 7 天汇总口径
+        - generic [ref=e109]:
+          - generic [ref=e110]: 待处理异常
+          - generic [ref=e111]: "788"
+          - generic [ref=e112]: 累计 788
+        - generic [ref=e114]:
+          - generic [ref=e115]: 待审批
+          - generic [ref=e116]: "3"
+          - generic [ref=e117]: 高风险 · Human-in-the-loop
+        - generic [ref=e119]:
+          - generic [ref=e120]: 已执行动作
+          - generic [ref=e121]: "31"
+          - generic [ref=e122]: 成功率 100%
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - generic [ref=e126]:
+            - generic [ref=e127]: 销售额趋势
+            - generic [ref=e128]: 最近 30 天 · 时间范围可在右上角切换
+          - img [ref=e130]:
+            - generic [ref=e131]: ¥2,635,691
+            - generic [ref=e132]: ¥1,976,791
+            - generic [ref=e133]: ¥1,317,891
+            - generic [ref=e134]: ¥658,991
+            - generic [ref=e135]: ¥91
+            - generic [ref=e138]: 09-07
+            - generic [ref=e139]: 09-11
+            - generic [ref=e140]: 09-15
+            - generic [ref=e141]: 09-19
+            - generic [ref=e142]: 09-23
+            - generic [ref=e143]: 09-27
+            - generic [ref=e144]: 10-01
+            - generic [ref=e145]: 10-05
+        - generic [ref=e146]:
+          - generic [ref=e148]:
+            - generic [ref=e149]: Agent 评估指标
+            - generic [ref=e150]: G4 控风险 / G2 提效率 · 指标字典见 data/kb/metrics.yaml
+          - table [ref=e152]:
+            - rowgroup [ref=e153]:
+              - row [ref=e154]:
+                - cell "异常发现时效（均值）" [ref=e155]
+                - cell "137.7 h ✓" [ref=e156]
+              - row [ref=e157]:
+                - cell "根因定位准确率" [ref=e158]
+                - cell "100 % ✓" [ref=e159]
+              - row [ref=e160]:
+                - cell "建议采纳率" [ref=e161]
+                - cell "100 % ✓" [ref=e162]
+              - row [ref=e163]:
+                - cell "自动执行成功率" [ref=e164]
+                - cell "100 % ✓" [ref=e165]
+              - row [ref=e166]:
+                - cell "高风险审批合规率" [ref=e167]
+                - cell "100 % ✓" [ref=e168]
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - generic [ref=e172]:
+              - generic [ref=e173]: 最新异常
+              - generic [ref=e174]: 感知层输出 · 点击行进入详情
+            - link "查看全部 →" [ref=e176] [cursor=pointer]:
+              - /url: "#/anomalies"
+          - table [ref=e178]:
+            - rowgroup [ref=e179]:
+              - row [ref=e180]:
+                - columnheader [ref=e181]
+                - columnheader "严重度" [ref=e182]
+                - columnheader "类型" [ref=e183]
+                - columnheader "门店" [ref=e184]
+                - columnheader "商品" [ref=e185]
+                - columnheader "观察 / 期望" [ref=e186]
+                - columnheader "偏差" [ref=e187]
+                - columnheader "窗口" [ref=e188]
+                - columnheader "状态" [ref=e189]
+            - rowgroup [ref=e190]:
+              - row [ref=e191] [cursor=pointer]:
+                - cell "📉" [ref=e192]
+                - cell "critical" [ref=e194]
+                - cell "sales_drop" [ref=e196]
+                - cell "上海001店" [ref=e197]
+                - cell "P00150" [ref=e198]
+                - cell "0 / 3" [ref=e199]
+                - cell "-100%" [ref=e200]
+                - cell "09-22 ~ 09-24" [ref=e201]
+                - cell "diagnosed" [ref=e202]
+              - row [ref=e204] [cursor=pointer]:
+                - cell "📉" [ref=e205]
+                - cell "critical" [ref=e207]
+                - cell "sales_drop" [ref=e209]
+                - cell "南京003店" [ref=e210]
+                - cell "P00081" [ref=e211]
+                - cell "0 / 3.5" [ref=e212]
+                - cell "-100%" [ref=e213]
+                - cell "09-27 ~ 09-28" [ref=e214]
+                - cell "diagnosed" [ref=e215]
+              - row [ref=e217] [cursor=pointer]:
+                - cell "📉" [ref=e218]
+                - cell "critical" [ref=e220]
+                - cell "sales_drop" [ref=e222]
+                - cell "北京004店" [ref=e223]
+                - cell "P00115" [ref=e224]
+                - cell "0 / 3" [ref=e225]
+                - cell "-100%" [ref=e226]
+                - cell "09-28 ~ 09-29" [ref=e227]
+                - cell "diagnosed" [ref=e228]
+              - row [ref=e230] [cursor=pointer]:
+                - cell "📉" [ref=e231]
+                - cell "critical" [ref=e233]
+                - cell "sales_drop" [ref=e235]
+                - cell "深圳007店" [ref=e236]
+                - cell "P00165" [ref=e237]
+                - cell "0 / 3" [ref=e238]
+                - cell "-100%" [ref=e239]
+                - cell "09-16 ~ 09-17" [ref=e240]
+                - cell "diagnosed" [ref=e241]
+              - row [ref=e243] [cursor=pointer]:
+                - cell "📉" [ref=e244]
+                - cell "critical" [ref=e246]
+                - cell "sales_drop" [ref=e248]
+                - cell "杭州013店" [ref=e249]
+                - cell "P00084" [ref=e250]
+                - cell "0 / 3" [ref=e251]
+                - cell "-100%" [ref=e252]
+                - cell "09-19 ~ 09-23" [ref=e253]
+                - cell "diagnosed" [ref=e254]
+              - row [ref=e256] [cursor=pointer]:
+                - cell "📉" [ref=e257]
+                - cell "critical" [ref=e259]
+                - cell "sales_drop" [ref=e261]
+                - cell "南京014店" [ref=e262]
+                - cell "P00081" [ref=e263]
+                - cell "0 / 3" [ref=e264]
+                - cell "-100%" [ref=e265]
+                - cell "09-21 ~ 09-24" [ref=e266]
+                - cell "diagnosed" [ref=e267]
+              - row [ref=e269] [cursor=pointer]:
+                - cell "📉" [ref=e270]
+                - cell "critical" [ref=e272]
+                - cell "sales_drop" [ref=e274]
+                - cell "天津016店" [ref=e275]
+                - cell "P00054" [ref=e276]
+                - cell "0 / 3" [ref=e277]
+                - cell "-100%" [ref=e278]
+                - cell "09-22 ~ 09-24" [ref=e279]
+                - cell "diagnosed" [ref=e280]
+              - row [ref=e282] [cursor=pointer]:
+                - cell "📉" [ref=e283]
+                - cell "critical" [ref=e285]
+                - cell "sales_drop" [ref=e287]
+                - cell "上海001店" [ref=e288]
+                - cell "P00008" [ref=e289]
+                - cell "0 / 4" [ref=e290]
+                - cell "-100%" [ref=e291]
+                - cell "10-02 ~ 10-06" [ref=e292]
+                - cell "diagnosed" [ref=e293]
+        - generic [ref=e295]:
+          - generic [ref=e296]: 门店销售额排行 · 7d
+          - table [ref=e300]:
+            - rowgroup [ref=e301]:
+              - row [ref=e302]:
+                - columnheader "#" [ref=e303]
+                - columnheader "门店" [ref=e304]
+                - columnheader "销售额" [ref=e305]
+              - row [ref=e306]:
+                - cell "1" [ref=e307]
+                - cell "北京004店" [ref=e308]
+                - cell "¥210,741" [ref=e309]
+              - row [ref=e310]:
+                - cell "2" [ref=e311]
+                - cell "杭州002店" [ref=e312]
+                - cell "¥209,500" [ref=e313]
+              - row [ref=e314]:
+                - cell "3" [ref=e315]
+                - cell "重庆009店" [ref=e316]
+                - cell "¥205,907" [ref=e317]
+              - row [ref=e318]:
+                - cell "4" [ref=e319]
+                - cell "武汉010店" [ref=e320]
+                - cell "¥201,380" [ref=e321]
+              - row [ref=e322]:
+                - cell "5" [ref=e323]
+                - cell "广州006店" [ref=e324]
+                - cell "¥193,672" [ref=e325]
+              - row [ref=e326]:
+                - cell "6" [ref=e327]
+                - cell "上海001店" [ref=e328]
+                - cell "¥191,420" [ref=e329]
+              - row [ref=e330]:
+                - cell "7" [ref=e331]
+                - cell "南京003店" [ref=e332]
+                - cell "¥189,377" [ref=e333]
+              - row [ref=e334]:
+                - cell "8" [ref=e335]
+                - cell "深圳007店" [ref=e336]
+                - cell "¥183,270" [ref=e337]
+              - row [ref=e338]:
+                - cell "9" [ref=e339]
+                - cell "天津005店" [ref=e340]
+                - cell "¥166,967" [ref=e341]
+              - row [ref=e342]:
+                - cell "10" [ref=e343]
+                - cell "成都008店" [ref=e344]
+                - cell "¥162,678" [ref=e345]
+    - contentinfo [ref=e79]: 零售经营决策 Agent Console · 设计语言源自 Grafana（65K★ 可观测性控制台） · Mock 数据 · 种子可重复

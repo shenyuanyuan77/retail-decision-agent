@@ -1,0 +1,239 @@
+# 指标字典 + 角色 + 场景 + 目标映射（机器可读，治理层/评估层/前端共同消费）
+# 目标1交付物：指标字典完整性由 scripts/validate_metrics.py 校验
+
+business_goals:
+  - code: G1
+    name: 保销售
+    description: 减少缺货与客诉导致的销售损失，保障门店销售额达成
+    metrics: [sales_amount, sales_qty, stockout_rate, complaint_rate, gross_margin_rate]
+  - code: G2
+    name: 提效率
+    description: 提升库存周转与补货时效，降低资金占用与临期损耗
+    metrics: [inventory_turnover, anomaly_detection_latency]
+  - code: G3
+    name: 增会员
+    description: 提升会员复购与精准触达效果
+    metrics: [member_repurchase_rate, promo_roi]
+  - code: G4
+    name: 控风险
+    description: Agent 建议与执行可控可审计，高风险动作 100% 人工审批
+    metrics: [root_cause_accuracy, suggestion_adoption_rate, auto_exec_success_rate, high_risk_approval_compliance]
+
+metrics:
+  - code: sales_amount
+    name: 销售额
+    category: business
+    unit: CNY
+    direction: up
+    definition: 统计周期内门店销售金额合计
+    formula: "SUM(sales_orders.amount)"
+    source: sales_orders
+    grain: [date, store_id]
+  - code: sales_qty
+    name: 销量
+    category: business
+    unit: 件
+    direction: up
+    definition: 统计周期内销售件数合计
+    formula: "SUM(sales_orders.qty)"
+    source: sales_orders
+    grain: [date, store_id]
+  - code: gross_margin_rate
+    name: 毛利率
+    category: business
+    unit: percent
+    direction: up
+    definition: 销售毛利占销售额比例
+    formula: "(SUM(amount) - SUM(qty * unit_cost)) / SUM(amount)"
+    source: sales_orders, products
+    grain: [date, store_id]
+  - code: stockout_rate
+    name: 缺货率
+    category: business
+    unit: percent
+    direction: down
+    definition: 营业日中门店-SKU 有销售需求但库存为 0 的比例
+    formula: "stockout_store_sku_days / active_store_sku_days * 100"
+    source: inventory, sales_orders
+    grain: [date, store_id]
+  - code: inventory_turnover
+    name: 库存周转天数
+    category: business
+    unit: 天
+    direction: down
+    definition: 平均库存可供销售天数
+    formula: "AVG(inventory.on_hand) / (SUM(sales_orders.qty) / days)"
+    source: inventory, sales_orders
+    grain: [date, store_id]
+  - code: promo_roi
+    name: 促销 ROI
+    category: business
+    unit: ratio
+    direction: up
+    definition: 促销带来的增量毛利 / 促销让利成本
+    formula: "(promo_period_profit - baseline_profit) / promo_discount_cost"
+    source: sales_orders, campaigns
+    grain: [campaign_id]
+  - code: member_repurchase_rate
+    name: 会员复购率
+    category: business
+    unit: percent
+    direction: up
+    definition: 30 天内购买≥2次的会员占活跃会员比例
+    formula: "members_with_2plus_orders_30d / active_members_30d * 100"
+    source: member_orders
+    grain: [store_id]
+  - code: complaint_rate
+    name: 客诉率
+    category: business
+    unit: "件/千单"
+    direction: down
+    definition: 每 1000 笔订单的客诉工单数
+    formula: "ticket_count / order_count * 1000"
+    source: tickets, sales_orders
+    grain: [date, store_id]
+  - code: anomaly_detection_latency
+    name: 异常发现时效
+    category: agent
+    unit: 小时
+    direction: down
+    definition: 异常发生时间到感知层输出异常事件的小时差
+    formula: "detected_at - anomaly_started_at"
+    source: anomalies
+    grain: [anomaly_id]
+  - code: root_cause_accuracy
+    name: 根因定位准确率
+    category: agent
+    unit: percent
+    direction: up
+    definition: 诊断层 Top3 根因命中注入根因真值的比例
+    formula: "anomalies_with_truth_in_top3 / evaluated_anomalies * 100"
+    source: anomalies, anomaly_storylines
+    grain: [anomaly_id]
+  - code: suggestion_adoption_rate
+    name: 建议采纳率
+    category: agent
+    unit: percent
+    direction: up
+    definition: 建议被采纳（自动执行或审批通过）的比例
+    formula: "adopted_decisions / total_decisions * 100"
+    source: decision_cards
+    grain: [decision_id]
+  - code: auto_exec_success_rate
+    name: 自动执行成功率
+    category: agent
+    unit: percent
+    direction: up
+    definition: 低风险自动执行动作中执行成功的比例
+    formula: "successful_auto_executions / total_auto_executions * 100"
+    source: executions
+    grain: [execution_id]
+  - code: high_risk_approval_compliance
+    name: 高风险审批合规率
+    category: governance
+    unit: percent
+    direction: up
+    definition: 高风险动作全部经过人工审批才执行的比例（目标 100%）
+    formula: "high_risk_executed_with_approval / high_risk_executed * 100"
+    source: executions, approvals, audit_logs
+    grain: [execution_id]
+
+roles:
+  - code: region_manager
+    name: 区域经理
+    permission_level: L2
+    data_scope: region
+    duties: 查看区域经营总览、确认跨门店调拨建议、审批区域内低风险动作
+  - code: store_manager
+    name: 门店店长
+    permission_level: L2
+    data_scope: store
+    duties: 查看本店异常与建议、发起补货申请、确认本店执行结果
+  - code: supply_planner
+    name: 供应链计划员
+    permission_level: L2
+    data_scope: global
+    duties: 查看库存与补货建议、执行补货/调拨、维护安全库存参数
+  - code: member_ops
+    name: 会员运营
+    permission_level: L2
+    data_scope: global
+    duties: 查看会员分层、创建促销活动与会员触达、跟踪 ROI
+  - code: cs_supervisor
+    name: 客服主管
+    permission_level: L2
+    data_scope: global
+    duties: 查看客诉工单、创建回访任务、跟踪客诉率
+  - code: hq_ops
+    name: 总部运营
+    permission_level: L2
+    data_scope: global
+    duties: 查看全局指标、复盘报告、知识库与策略权重
+  - code: risk_approver
+    name: 风控审批人
+    permission_level: L3
+    data_scope: global
+    duties: 审批高风险动作（大额促销、跨区调拨、价格变更），查看全量审计日志
+  - code: agent_service
+    name: 决策Agent服务身份
+    permission_level: L2
+    data_scope: global
+    duties: Agent 自动执行上限为 L2；任何 L3 动作必须转人工审批，L4 一律拒绝
+
+scenarios:
+  - code: sales_drop
+    name: 销量骤降
+    trigger: "门店-SKU 日销量低于基线(滚动28天中位数)的 60%，连续≥2天"
+    metrics_impacted: [sales_amount, sales_qty, stockout_rate]
+    suggested_actions: [补货, 调拨, 促销, 客服跟进]
+    risk_level: medium
+    requires_approval: "视动作而定：常规补货低风险自动；促销/调拨按治理规则"
+  - code: sales_surge
+    name: 销量骤升
+    trigger: "门店-SKU 日销量高于基线 180%，连续≥2天"
+    metrics_impacted: [sales_amount, sales_qty, promo_roi, stockout_rate]
+    suggested_actions: [补货, 会员触达, 促销延长评估]
+    risk_level: low
+    requires_approval: "补货低风险可自动；新增促销须审批"
+  - code: stockout
+    name: 缺货
+    trigger: "库存<=安全库存 或 库存=0 且近7天有销售记录"
+    metrics_impacted: [stockout_rate, sales_amount, inventory_turnover]
+    suggested_actions: [补货, 调拨]
+    risk_level: low
+    requires_approval: "常规补货(金额≤1万, 同区域)自动；跨区域调拨须审批"
+  - code: near_expiry
+    name: 临期
+    trigger: "保质期类 SKU 剩余保质期<30% 且库存>近14天销量"
+    metrics_impacted: [gross_margin_rate, inventory_turnover]
+    suggested_actions: [折价促销, 会员触达]
+    risk_level: medium
+    requires_approval: "折扣≤10% 可自动；>10% 须审批"
+  - code: member_churn
+    name: 会员流失
+    trigger: "门店会员 30 天复购率环比下降>20%"
+    metrics_impacted: [member_repurchase_rate, sales_amount]
+    suggested_actions: [会员触达, 促销]
+    risk_level: medium
+    requires_approval: "小额券(预算≤1万)自动；超预算须审批"
+  - code: complaint_surge
+    name: 客诉上升
+    trigger: "门店客诉率(件/千单)高于基线 2 倍，连续≥3天"
+    metrics_impacted: [complaint_rate, sales_amount, member_repurchase_rate]
+    suggested_actions: [客服跟进, 临期折价, 陈列整改]
+    risk_level: medium
+    requires_approval: "回访任务低风险自动；涉及赔偿须人工"
+  - code: competitor_promo
+    name: 竞品促销
+    trigger: "外部数据显示竞品同品类促销且本店该品类销量下滑>15%"
+    metrics_impacted: [sales_amount, sales_qty, market_share]
+    suggested_actions: [促销, 价格跟踪, 会员触达]
+    risk_level: high
+    requires_approval: "应对性价格调整属于价格变更，必须审批"
+  - code: weather_impact
+    name: 天气影响
+    trigger: "天气突变(降温/暴雨)且对应品类销量同步偏移"
+    metrics_impacted: [sales_amount, sales_qty]
+    suggested_actions: [补货, 调拨, 陈列调整]
+    risk_level: low
+    requires_approval: "按动作本身风险等级处理"

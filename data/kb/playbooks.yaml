@@ -1,0 +1,73 @@
+# 决策打法库（决策层消费：根因/异常 → 候选动作 + 约束 + 估算参数）
+# 参数依据：world/model.py 因果模型（促销弹性 lift = 1 + discount*6，恢复系数等）
+#
+# 【2026-09-30 产品审计裁决】按原问题最小集（R4 仅点名"补货或促销建议"）收缩：
+# transfer / member_reach / cs_followup 三类动作冻结——打法在此移除，代码与治理规则保留，
+# 需要时在 YAML 中恢复即可（配置收缩优于删码，见 docs/06-product-audit.md）。
+
+playbooks:
+  - trigger: {anomaly_type: sales_drop, root_cause: stockout}
+    actions:
+      - action_type: replenish
+        priority: 1
+        qty_rule: cover_14d
+        rationale: 缺货导致销量损失，按 14 天覆盖量补货并跟踪到货
+  - trigger: {anomaly_type: sales_surge, root_cause: promo}
+    actions:
+      - action_type: replenish
+        priority: 1
+        qty_rule: cover_10d_surge
+        rationale: 促销拉动需求，提前补货避免活动期间断货
+  - trigger: {anomaly_type: sales_drop, root_cause: complaint}
+    actions:
+      - action_type: promo
+        priority: 1
+        discount_pct: 10
+        duration_days: 7
+        rationale: 客诉期折价挽回口碑与销量（10% 折扣低风险可自动）
+  - trigger: {anomaly_type: sales_drop, root_cause: near_expiry}
+    actions:
+      - action_type: promo
+        priority: 1
+        discount_pct: 12
+        duration_days: 7
+        rationale: 临期折价出清，降低损耗（>10% 折扣需审批）
+  - trigger: {anomaly_type: sales_drop, root_cause: competitor_promo}
+    actions:
+      - action_type: promo
+        priority: 1
+        discount_pct: 12
+        duration_days: 7
+        rationale: 跟进竞品促销力度，防止客流流失（高风险，需审批）
+  - trigger: {anomaly_type: sales_drop, root_cause: member_churn}
+    actions:
+      - action_type: promo
+        priority: 1
+        discount_pct: 10
+        duration_days: 7
+        rationale: 流失会员召回促销
+  - trigger: {anomaly_type: sales_drop, root_cause: weather}
+    actions:
+      - action_type: replenish
+        priority: 1
+        qty_rule: cover_7d
+        rationale: 天气驱动的需求变化，按新需求水平补货
+  - trigger: {anomaly_type: sales_drop, root_cause: supply_delay}
+    actions:
+      - action_type: replenish
+        priority: 1
+        qty_rule: cover_14d
+        rationale: 逾期订单催补 + 追加应急补货
+
+constraints:
+  safety_stock_cover_days: 5
+  max_cover_days: 21
+  margin_floor_pct: 15
+  max_discount_pct: 30
+  budget_cap: 100000
+
+impact_model:
+  promo_lift_coef: 6.0
+  replenish_recovery: 0.9
+  cs_followup_recovery: 0.3
+  member_reach_retention: 0.25

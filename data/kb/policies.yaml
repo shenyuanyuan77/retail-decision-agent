@@ -1,0 +1,81 @@
+# 治理规则库（Policy Engine 消费，机器可读）
+# 风险规则：折扣>10%、预算>1万、价格变更、跨区域调拨等必须审批；超上限直接拒绝（L4）。
+
+action_types:
+  replenish:
+    name: 补货下单
+    description: 向供应商创建补货订单
+    base_level: 2
+    rules:
+      - id: replenish_amount
+        field: amount
+        thresholds: [{op: "<=", value: 10000, risk: low, approval: false},
+                    {op: ">", value: 10000, risk: medium, approval: true}]
+      - id: replenish_hard_cap
+        field: amount
+        thresholds: [{op: ">", value: 100000, deny: true, reason: "单笔补货金额超过 10 万硬上限，需拆单人工处理"}]
+  transfer:
+    name: 库存调拨
+    description: 门店间库存调拨
+    base_level: 2
+    rules:
+      - id: transfer_cross_region
+        field: cross_region
+        thresholds: [{op: "==", value: true, risk: high, approval: true, reason: "跨区域调拨必须审批"}]
+      - id: transfer_amount
+        field: amount
+        thresholds: [{op: "<=", value: 10000, risk: low, approval: false},
+                    {op: ">", value: 10000, risk: medium, approval: true}]
+  promo:
+    name: 促销活动
+    description: 创建促销/折扣活动
+    base_level: 2
+    rules:
+      - id: promo_discount
+        field: discount_pct
+        thresholds: [{op: "<=", value: 10, risk: low, approval: false},
+                     {op: "<=", value: 30, risk: high, approval: true, reason: "折扣超过 10% 必须审批"}]
+      - id: promo_discount_cap
+        field: discount_pct
+        thresholds: [{op: ">", value: 30, deny: true, reason: "折扣超过 30% 属于禁止动作（L4）"}]
+      - id: promo_budget
+        field: budget
+        thresholds: [{op: "<=", value: 10000, risk: low, approval: false},
+                     {op: "<=", value: 100000, risk: high, approval: true, reason: "促销预算超过 1 万必须审批"}]
+      - id: promo_budget_cap
+        field: budget
+        thresholds: [{op: ">", value: 100000, deny: true, reason: "促销预算超过 10 万属于禁止动作（L4）"}]
+  member_reach:
+    name: 会员触达
+    description: 会员消息/券触达
+    base_level: 2
+    rules:
+      - id: reach_budget
+        field: budget
+        thresholds: [{op: "<=", value: 10000, risk: low, approval: false},
+                     {op: "<=", value: 100000, risk: high, approval: true, reason: "触达预算超过 1 万必须审批"}]
+      - id: reach_budget_cap
+        field: budget
+        thresholds: [{op: ">", value: 100000, deny: true, reason: "触达预算超过 10 万属于禁止动作（L4）"}]
+  cs_followup:
+    name: 客服跟进
+    description: 创建客服回访/排查任务
+    base_level: 2
+    rules:
+      - id: cs_type
+        field: task_type
+        thresholds: [{op: "==", value: "compensation_review", risk: high, approval: true, reason: "涉及赔偿必须人工确认"}]
+  price_change:
+    name: 价格变更
+    description: 商品零售价调整
+    base_level: 3
+    rules:
+      - id: price_any
+        field: always
+        thresholds: [{op: "==", value: true, risk: high, approval: true, reason: "任何价格变更必须审批"}]
+
+forbidden_actions:   # L4 全局禁止
+  - close_store
+  - delete_sales_data
+  - modify_audit_log
+  - bulk_member_message_all
