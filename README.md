@@ -33,6 +33,9 @@ python scripts/generate.py && cd backend && python -m uvicorn app.main:app --por
 
 打开 <http://127.0.0.1:8300>。
 
+**在线只读预览（GitHub Pages 快照版）**：<https://shenyuanyuan77.github.io/retail-decision-agent/>
+每次 push main 后 Actions 自动重建演示数据快照并发布；完整交互（运行 Agent/审批/执行）请本地启动。
+
 ## 演示路径（6 步）
 
 1. **经营总览**：销售额/毛利率 KPI、30 天趋势、待处理异常与待审批计数

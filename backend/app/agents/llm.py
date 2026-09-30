@@ -24,6 +24,8 @@ def _facts_numbers(facts: dict) -> set[str]:
             nums.add(s)
             nums.add(f"{v:.1f}")
             nums.add(f"{v:.2f}")
+            # 绝对值形态：叙述中"下降95%"对应事实 -95.0 不算编造
+            nums.add(f"{abs(v):g}")
             if isinstance(v, float) and v == int(v):
                 nums.add(str(int(v)))
         elif isinstance(v, str):

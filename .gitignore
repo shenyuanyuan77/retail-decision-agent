@@ -10,3 +10,4 @@ node_modules/
 public/
 web/screenshot_*.png
 .playwright-mcp/
+.env
