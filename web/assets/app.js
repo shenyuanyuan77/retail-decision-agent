@@ -8,6 +8,33 @@ const CORE_ACTIONS = new Set(["replenish", "promo"]);   // R4：原问题只点�
 const $ = (sel) => document.querySelector(sel);
 const main = () => $("#main");
 
+/* 静态快照模式：GitHub Pages 无后端，fetch /api 失败时自动降级读 snapshot/*.json（只读预览） */
+function snapPath(path) {
+  const [p, q] = path.split("?");
+  const qs = q ? "-" + q.replace(/[^a-z0-9]/gi, "") : "";
+  return "snapshot/" + p.replace(/^\/(api\/)?/, "").replace(/\//g, "-") + qs + ".json";
+}
+async function fetchJSON(path) {
+  try {
+    const r = await fetch(API + path);
+    if (!r.ok) throw new Error(r.status);
+    if (!window.__static) return await r.json();
+    throw new Error("static");
+  } catch (e) {
+    if (!window.__static) {
+      window.__static = true;
+      document.body.classList.add("static-mode");
+    }
+    const r2 = await fetch(snapPath(path));
+    if (!r2.ok) throw new Error("快照缺失: " + path);
+    return await r2.json();
+  }
+}
+function staticReadonly() {
+  if (window.__static) { toast("静态快照预览为只读 —— 完整交互请本地运行后端", false); return true; }
+  return false;
+}
+
 function token() { return $("#role-select").value; }
 function headers() { return { "X-Auth-Token": token(), "Content-Type": "application/json" }; }
 
@@ -87,9 +114,9 @@ function lineChart(points, color = "#4f46e5") {
 async function refreshBadges() {
   try {
     const [ov, anomalies, approvals] = await Promise.all([
-      fetch(API + "/kpi/overview").then(r => r.json()),
-      fetch(API + "/agent/anomalies?limit=100").then(r => r.json()),
-      fetch(API + "/gov/approvals?status=pending").then(r => r.json()),
+      fetchJSON("/kpi/overview"),
+      fetchJSON("/agent/anomalies?limit=100"),
+      fetchJSON("/gov/approvals?status=pending"),
     ]);
     $("#biz-date").textContent = `业务日期 ${ov.biz_date}`;
     setBadge("#badge-anomaly", ov.anomalies_open);
@@ -109,10 +136,10 @@ function setBadge(sel, n, warn = false) {
 async function pageOverview() {
   const days = 30;
   const [ov, trend, anomalies, stores] = await Promise.all([
-    fetch(API + "/kpi/overview").then(r => r.json()),
-    fetch(API + `/kpi/trend?days=${days}`).then(r => r.json()),
-    fetch(API + "/agent/anomalies?limit=8").then(r => r.json()),
-    fetch(API + "/kpi/stores?limit=10").then(r => r.json()),
+    fetchJSON("/kpi/overview"),
+    fetchJSON(`/kpi/trend?days=${days}`),
+    fetchJSON("/agent/anomalies?limit=8"),
+    fetchJSON("/kpi/stores?limit=10"),
   ]);
   const mom = ov.sales_mom_pct;
   main().innerHTML = `
@@ -160,7 +187,8 @@ function anomalyTable(items) {
 async function pageAnomalies() {
   const q = new URLSearchParams(location.hash.split("?")[1] || "");
   const status = q.get("status") || "";
-  const anomalies = await fetch(API + `/agent/anomalies?limit=100${status ? `&status=${status}` : ""}`).then(r => r.json());
+  const anomalies = await fetchJSON(`/agent/anomalies?limit=100`);
+  const items = status ? anomalies.items.filter(a => a.status === status) : anomalies.items;
   main().innerHTML = `
   <div class="toolbar"><b>异常中心</b>
     <select onchange="location.hash = this.value ? '#/anomalies?status=' + this.value : '#/anomalies'">
@@ -170,10 +198,10 @@ async function pageAnomalies() {
     <span class="sep"></span>
     <span class="hint">系统自动扫描销售数据发现异常，无需人工发起</span>
   </div>
-  ${card(`异常列表（${anomalies.items.length}）`, anomalyTable(anomalies.items), "", "", true)}`;
+  ${card(`异常列表（${items.length}）`, anomalyTable(items), "", "", true)}`;
 }
 async function pageAnomalyDetail(id) {
-  const a = await fetch(API + `/agent/anomalies/${id}`).then(r => r.json());
+  const a = await fetchJSON(`/agent/anomalies/${id}`);
   const dg = a.diagnosis;
   main().innerHTML = `
   <div class="toolbar">
@@ -244,7 +272,7 @@ function decisionHtml(d) {
   </div></section>`;
 }
 async function pageDecisions() {
-  const decisions = await fetch(API + "/agent/decisions?limit=100").then(r => r.json());
+  const decisions = await fetchJSON("/agent/decisions?limit=100");
   const items = decisions.items.filter(d => CORE_ACTIONS.has(d.action_type));
   main().innerHTML = `
   <div class="toolbar"><b>补货 / 促销建议</b>
@@ -258,8 +286,8 @@ async function pageDecisions() {
 /* ═══════════ 页面：审批中心 ═══════════ */
 async function pageApprovals() {
   const [pending, all] = await Promise.all([
-    fetch(API + "/gov/approvals?status=pending").then(r => r.json()),
-    fetch(API + "/gov/approvals?limit=50").then(r => r.json()),
+    fetchJSON("/gov/approvals?status=pending"),
+    fetchJSON("/gov/approvals?limit=50"),
   ]);
   main().innerHTML = `
   <div class="toolbar"><b>审批中心</b>
@@ -289,7 +317,7 @@ async function pageApprovals() {
 
 /* ═══════════ 页面：执行记录 ═══════════ */
 async function pageExecutions() {
-  const execs = await fetch(API + "/agent/executions?limit=100").then(r => r.json());
+  const execs = await fetchJSON("/agent/executions?limit=100");
   main().innerHTML = `
   <div class="toolbar"><b>执行记录</b>
     <span class="sep"></span><span class="hint">仅执行通过审批或低风险的动作 · 每一步可追溯</span></div>
@@ -316,12 +344,13 @@ async function pageAudit() {
 }
 async function loadAudit() {
   const trace = $("#audit-trace") ? $("#audit-trace").value.trim() : "";
-  const logs = await fetch(API + `/gov/audit-logs?limit=200${trace ? `&trace_id=${trace}` : ""}`).then(r => r.json());
+  const logs = await fetchJSON(`/gov/audit-logs?limit=200`);
+  const logItems = trace ? logs.items.filter(l => (l.trace_id || "").includes(trace)) : logs.items;
   $("#audit-card").innerHTML = card(
-    `日志（${logs.items.length}）`,
+    `日志（${logItems.length}）`,
     logs.items.length ? `<table>
     <tr><th>时间</th><th>主体</th><th>动作</th><th>资源</th><th>结果</th><th>详情</th></tr>
-    ${logs.items.map(l => `<tr>
+    ${logItems.map(l => `<tr>
       <td class="mono">${esc((l.ts || "").slice(5, 19))}</td>
       <td>${l.actor_type === "agent" ? "🤖 " : ""}${esc(l.actor_id)}</td>
       <td class="mono">${esc(l.action)}</td>
@@ -335,6 +364,7 @@ async function loadAudit() {
 
 /* ═══════════ 动作 ═══════════ */
 async function runScan() {
+  if (staticReadonly()) return;
   toast("正在扫描销售数据…");
   try {
     const r = await api("/agent/scan", { method: "POST" });
@@ -343,6 +373,7 @@ async function runScan() {
   } catch (e) { toast("扫描失败: " + e.message, false); }
 }
 async function runPipeline() {
+  if (staticReadonly()) return;
   toast("Agent 运行中：发现异常 → 原因分析 → 生成建议 → 执行…");
   try {
     const r = await api("/agent/pipeline", { method: "POST" });
@@ -352,6 +383,7 @@ async function runPipeline() {
   } catch (e) { toast("运行失败: " + e.message, false); }
 }
 async function execDecision(id) {
+  if (staticReadonly()) return;
   try {
     const r = await api(`/agent/execute?decision_id=${id}`, { method: "POST" });
     toast("执行状态: " + r.execution.status);
@@ -359,6 +391,7 @@ async function execDecision(id) {
   } catch (e) { toast("执行失败: " + e.message, false); }
 }
 async function decideApproval(id, decision) {
+  if (staticReadonly()) return;
   try {
     await api(`/gov/approvals/${id}/decide`, {
       method: "POST",

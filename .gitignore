@@ -9,3 +9,4 @@ backend/data_local/
 node_modules/
 public/
 web/screenshot_*.png
+.playwright-mcp/
