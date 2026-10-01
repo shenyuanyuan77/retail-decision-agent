@@ -291,8 +291,8 @@ async function pageApprovals() {
           '<td style="max-width:280px">' + esc(a.summary) + "</td>" +
           '<td class="hint" style="max-width:240px">' + (a.risk_reasons || []).map(r => "<div>\u2022 " + esc(r) + "</div>").join("") + "</td>" +
           '<td><div class="actions-row" style="margin:0">' +
-          '<button class="btn sm ok ap-decide" data-id="' + a.id + '" data-decision="approve">通过</button> ' +
-          '<button class="btn sm danger ap-decide" data-id="' + a.id + '" data-decision="reject">驳回</button></div></td></tr>').join("") +
+          '<button class="btn sm ok" onclick="decideApproval(\'' + a.id + "\',\'approve\',this)">通过</button> ' +
+          '<button class="btn sm danger" onclick="decideApproval(\'' + a.id + "\',\'reject\',this)">驳回</button></div></td></tr>").join("") +
         "</table></div>" : emptyState("\u2705", "无待审批项 —— 所有高风险动作均已处理"),
       "高风险动作 100% 人工审批", "", true) +
     '<div style="height:14px"></div>' +
@@ -408,10 +408,6 @@ function route() {
   });
 }
 window.addEventListener("hashchange", route);
-document.addEventListener("click", (ev) => {
-  const t = ev.target.closest ? ev.target.closest(".ap-decide") : null;
-  if (t) decideApproval(t.dataset.id, t.dataset.decision, t);
-});
 if ($("#burger")) $("#burger").addEventListener("click", () => document.body.classList.toggle("drawer-open"));
 if ($("#drawer-mask")) $("#drawer-mask").addEventListener("click", () => document.body.classList.remove("drawer-open"));
 function boot() { route(); refreshBadges(); }

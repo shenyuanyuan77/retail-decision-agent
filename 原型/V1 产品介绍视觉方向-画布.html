@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>产品介绍 · 视觉方向对比</title>
+<style>
+:root{
+  --zwork-preview-accent:#2563eb;
+  --zwork-preview-mode:light;
+  --zwork-preview-font-family:'HarmonyOS Sans SC','微软雅黑','PingFang SC',sans-serif;
+  --zwork-preview-type-scale:1;
+  --zwork-preview-density:1;
+  --zwork-preview-motion:1;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--zwork-preview-font-family);
+  background:#f3f4f6;
+  background-image:radial-gradient(#d6d9de 1px,transparent 1px);
+  background-size:24px 24px;
+  color:#111827;
+  padding:56px 0 88px;
+}
+.board{padding:0 56px}
+.bh{padding:0 0 46px}
+.bh h1{font-size:31px;letter-spacing:-.5px}
+.bh p{margin-top:12px;font-size:14px;color:#5b6472;max-width:900px;line-height:1.75}
+.bh code{font-family:'Cascadia Mono',Consolas,monospace;font-size:12.5px;background:#e6e9ee;padding:2px 6px;border-radius:4px;color:#374151}
+.grp{margin-bottom:70px}
+.gh{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:9px}
+.gcode{font-family:'Cascadia Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;background:#111827;color:#fff;border-radius:999px;padding:4px 11px}
+.gh h2{font-size:20.5px;letter-spacing:-.2px}
+.gh .en{font-family:'Cascadia Mono',monospace;font-size:12px;color:#7c8798;letter-spacing:.08em}
+.gd{font-size:13.5px;color:#5b6472;line-height:1.75;margin-bottom:11px;max-width:980px}
+.gtags{display:flex;gap:8px;margin-bottom:24px;list-style:none;flex-wrap:wrap}
+.gtags li{font-size:12px;color:#48505c;background:#fff;border:1px solid #dfe3e8;border-radius:999px;padding:3px 10px}
+.row{display:flex;gap:32px;align-items:flex-start}
+.cell{list-style:none}
+.cell figcaption{display:flex;gap:10px;align-items:baseline;margin-bottom:10px;font-size:12.5px;color:#48505c}
+.cell figcaption b{font-weight:700}
+.cell figcaption span{font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#8b95a3}
+.scr{width:1440px;height:810px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid #e2e5e9;position:relative;display:flex;flex-direction:column}
+
+/* ============ A 编辑部 Editorial ============ */
+.ed{background:#F7F5F0;color:#17161A;font-family:'Noto Serif SC','Source Han Serif SC',SimSun,Georgia,serif}
+.ed .pad{padding:72px 92px;display:flex;flex-direction:column;height:100%}
+.ed .meta{display:flex;justify-content:space-between;font-family:'Cascadia Mono',monospace;font-size:12.5px;letter-spacing:.18em;color:#8A8175}
+.ed .hr{height:2px;background:#17161A;margin-top:16px}
+.ed .hr.t{height:1px;background:#CFC7BA}
+.ed h1{font-size:104px;line-height:1.0;letter-spacing:-.03em;font-weight:700;margin:0}
+.ed .kick{font-family:'HarmonyOS Sans SC',sans-serif;font-size:14.5px;letter-spacing:.05em;color:#C0392B;font-weight:500}
+.ed .lead{font-size:23px;line-height:1.62;color:#3A3733;margin-top:26px;font-family:'HarmonyOS Sans SC',sans-serif}
+.ed .mid{margin:auto 0}
+.ed .foot{display:flex;gap:52px;padding-top:26px}
+.ed .foot div{font-family:'HarmonyOS Sans SC',sans-serif}
+.ed .foot b{display:block;font-size:15px;font-weight:700;margin-bottom:5px}
+.ed .foot span{font-size:12.5px;color:#6B6660}
+.ed h2{font-size:52px;letter-spacing:-.02em;line-height:1.14;margin:0}
+.ed .sub{font-family:'HarmonyOS Sans SC',sans-serif;font-size:15px;color:#6B6660;margin-top:14px}
+.ed .list{margin-top:auto}
+.ed .rw{display:grid;grid-template-columns:78px 1fr 300px;gap:26px;align-items:baseline;padding:17px 0;border-top:1px solid #D9D3C9}
+.ed .rw .c{font-family:'Cascadia Mono',monospace;font-size:15px;color:#C0392B;letter-spacing:.06em}
+.ed .rw .n{font-size:24px;font-weight:700;letter-spacing:-.01em}
+.ed .rw .e{font-family:'HarmonyOS Sans SC',sans-serif;font-size:13.5px;color:#5C5750;text-align:right;line-height:1.5}
+.ed .nums{display:flex;gap:0;border-top:2px solid #17161A;margin-top:22px}
+.ed .nums div{flex:1;padding:16px 0 0;font-family:'HarmonyOS Sans SC',sans-serif}
+.ed .nums b{display:block;font-size:29px;letter-spacing:-.02em;font-family:'Noto Serif SC',serif}
+.ed .nums span{font-size:12px;color:#6B6660}
+.ed .tl{display:grid;grid-template-columns:1fr 1fr;gap:0 64px;margin-top:auto}
+.ed .tl .it{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:19px 0;border-top:1px solid #D9D3C9}
+.ed .tl .no{font-size:26px;font-family:'Noto Serif SC',serif;color:#C0392B;line-height:1}
+.ed .tl .ti{font-size:19px;font-weight:700;font-family:'HarmonyOS Sans SC',sans-serif}
+.ed .tl .td{font-family:'HarmonyOS Sans SC',sans-serif;font-size:13px;color:#5C5750;margin-top:6px;line-height:1.55}
+
+/* ============ B 深色数据台 ============ */
+.dk{background:#0D1117;color:#E6EDF3;font-family:'HarmonyOS Sans SC',sans-serif}
+.dk .pad{padding:64px 76px;display:flex;flex-direction:column;height:100%;
+  background-image:linear-gradient(#161C24 1px,transparent 1px),linear-gradient(90deg,#161C24 1px,transparent 1px);
+  background-size:60px 60px}
+.dk .bar{display:flex;justify-content:space-between;font-family:'Cascadia Mono',monospace;font-size:12.5px;color:#6E7B8C;letter-spacing:.1em}
+.dk .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#2FD4A0;margin-right:8px;vertical-align:middle;box-shadow:0 0 10px #2FD4A0}
+.dk h1{font-size:78px;line-height:1.08;letter-spacing:-.03em;font-weight:700}
+.dk .accent{color:#2FD4A0}
+.dk .lead{font-size:17px;color:#93A1B1;line-height:1.7;margin-top:24px;max-width:760px}
+.dk .glow{height:1px;background:linear-gradient(90deg,#2FD4A0,rgba(47,212,160,0));margin:26px 0 0}
+.dk .metrics{display:flex;gap:1px;margin-top:auto;background:#1D2530}
+.dk .metrics div{flex:1;background:#0D1117;padding:18px 20px}
+.dk .metrics b{display:block;font-family:'Cascadia Mono',monospace;font-size:27px;color:#E6EDF3;letter-spacing:-.02em}
+.dk .metrics span{font-size:12px;color:#6E7B8C;margin-top:5px;display:block}
+.dk h2{font-size:39px;letter-spacing:-.02em;line-height:1.2}
+.dk .sub{font-size:14px;color:#7D8A9A;margin-top:12px;font-family:'Cascadia Mono',monospace}
+.dk .cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:34px}
+.dk .cd{border:1px solid #232C38;background:#131A23;border-radius:10px;padding:20px 18px;position:relative}
+.dk .cd.hot{border-color:#2FD4A0;background:#0F1E1B}
+.dk .cd .c{font-family:'Cascadia Mono',monospace;font-size:12px;color:#2FD4A0;letter-spacing:.1em}
+.dk .cd .n{font-size:17px;font-weight:700;margin:12px 0 14px;letter-spacing:-.01em}
+.dk .cd .e{font-size:12.5px;color:#8B98A8;line-height:1.6}
+.dk .strip{display:flex;gap:36px;margin-top:auto;border-top:1px solid #232C38;padding-top:20px}
+.dk .strip div b{font-family:'Cascadia Mono',monospace;font-size:21px;color:#E6EDF3;margin-right:8px}
+.dk .strip div span{font-size:12.5px;color:#6E7B8C}
+.dk .flow{display:flex;align-items:stretch;gap:0;margin-top:auto}
+.dk .st{flex:1;border:1px solid #232C38;background:#131A23;border-radius:9px;padding:18px 15px;margin-right:10px}
+.dk .st:last-child{margin-right:0}
+.dk .st.on{border-color:#2FD4A0}
+.dk .st .no{font-family:'Cascadia Mono',monospace;font-size:12px;color:#5C6B7C}
+.dk .st.on .no{color:#2FD4A0}
+.dk .st .ti{font-size:16px;font-weight:700;margin:11px 0 9px}
+.dk .st .td{font-size:12px;color:#8B98A8;line-height:1.55}
+.dk .st .tag{font-family:'Cascadia Mono',monospace;font-size:11px;color:#2FD4A0;margin-top:12px;display:block}
+
+/* ============ C 蓝图工程 ============ */
+.bp{background:#EDF1F6;color:#0F2E55;font-family:'HarmonyOS Sans SC',sans-serif}
+/* 网格：主次两级淡线，避免纯白大面积留空时显得空洞 */
+.bp .pad{padding:58px 72px;display:flex;flex-direction:column;height:100%;
+  background-image:linear-gradient(#DCE4EE 1px,transparent 1px),linear-gradient(90deg,#DCE4EE 1px,transparent 1px),
+    linear-gradient(#E6ECF3 1px,transparent 1px),linear-gradient(90deg,#E6ECF3 1px,transparent 1px);
+  background-size:40px 40px,40px 40px,8px 8px,8px 8px}
+.bp .bar{display:flex;justify-content:space-between;font-family:'Cascadia Mono',monospace;font-size:12px;color:#5A7089;letter-spacing:.12em;border-bottom:1.5px solid #0F2E55;padding-bottom:12px}
+.bp h1{font-size:72px;letter-spacing:-.02em;line-height:1.1;font-weight:700}
+.bp .lead{font-size:16px;color:#4A6484;line-height:1.7;margin-top:20px;max-width:720px}
+.bp .win{margin-top:30px;background:#fff;border:1.5px solid #0F2E55;position:relative;padding:20px 22px}
+.bp .win .lbl{position:absolute;top:-11px;left:18px;background:#EDF1F6;padding:0 8px;font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#5A7089}
+.bp .dim{display:flex;align-items:center;gap:10px;font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#5A7089}
+.bp .dim i{flex:1;height:1px;background:#A9BCD2;display:block}
+.bp .mark{color:#E8590C}
+.bp h2{font-size:38px;letter-spacing:-.02em;line-height:1.18}
+.bp .sub{font-size:13.5px;color:#5A7089;margin-top:12px;font-family:'Cascadia Mono',monospace}
+.bp .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:30px}
+.bp .blk{background:#fff;border:1.5px solid #C3D2E3;padding:18px 16px 20px;position:relative}
+.bp .blk.hot{border-color:#0F2E55}
+.bp .blk .no{font-family:'Cascadia Mono',monospace;font-size:12px;color:#E8590C;letter-spacing:.1em}
+.bp .blk .n{font-size:16.5px;font-weight:700;margin:10px 0 12px;color:#0F2E55}
+.bp .blk .e{font-size:12.5px;color:#4A6484;line-height:1.6}
+.bp .base{margin-top:26px;border-top:1.5px solid #0F2E55;padding-top:18px;display:flex;gap:48px}
+.bp .base div b{font-family:'Cascadia Mono',monospace;font-size:22px;color:#0F2E55;margin-right:9px}
+.bp .base div span{font-size:12.5px;color:#5A7089}
+.bp .dia{margin-top:auto;display:flex;align-items:stretch}
+.bp .nd{flex:1;background:#fff;border:1.5px solid #0F2E55;padding:16px 13px;position:relative;margin-right:22px}
+.bp .nd:last-child{margin-right:0}
+.bp .nd:not(:last-child):after{content:"";position:absolute;right:-22px;top:50%;width:14px;height:1.5px;background:#0F2E55}
+.bp .nd:not(:last-child):before{content:"";position:absolute;right:-22px;top:50%;width:0;height:0;
+  border-left:7px solid #0F2E55;border-top:5px solid transparent;border-bottom:5px solid transparent;transform:translate(7px,-4px)}
+.bp .nd .no{font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#E8590C}
+.bp .nd .ti{font-size:15.5px;font-weight:700;margin:10px 0 8px;color:#0F2E55}
+.bp .nd .td{font-size:11.5px;color:#4A6484;line-height:1.5}
+.bp .cap{display:flex;justify-content:space-between;font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#5A7089;margin-top:12px}
+/* 蓝图页表格 */
+.bp .tb{position:relative;background:#fff;border:1.5px solid #0F2E55;padding:20px 22px}
+.bp .tb .lbl{position:absolute;top:-11px;left:18px;background:#EDF1F6;padding:0 8px;font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#5A7089}
+.bp table{width:100%;border-collapse:collapse;font-size:12.5px;color:#4A6484}
+.bp th{text-align:left;font-weight:700;color:#0F2E55;font-size:12px;padding:0 12px 9px 0;border-bottom:1.5px solid #0F2E55}
+.bp td{padding:9px 12px 9px 0;border-bottom:1px solid #E1E8F0;vertical-align:top;line-height:1.5}
+.bp tbody tr:last-child td{border-bottom:none}
+.bp td:last-child,.bp th:last-child{font-family:'Cascadia Mono',monospace;font-size:11.5px;color:#5A7089;padding-right:0}
+.bp td:nth-child(2){font-family:'Cascadia Mono',monospace;color:#0F2E55}
+
+/* ============ D 巨字冲击 ============ */
+.cn{background:#0B0E12;color:#fff;font-family:'HarmonyOS Sans SC',sans-serif;overflow:hidden}
+.cn .pad{padding:70px 84px;display:flex;flex-direction:column;height:100%;position:relative}
+.cn .halo{position:absolute;right:-160px;top:-140px;width:820px;height:820px;border-radius:50%;
+  background:radial-gradient(circle,rgba(231,177,92,.30),rgba(231,177,92,0) 62%)}
+.cn .halo2{position:absolute;left:-220px;bottom:-280px;width:760px;height:760px;border-radius:50%;
+  background:radial-gradient(circle,rgba(120,160,255,.20),rgba(120,160,255,0) 62%)}
+.cn .bar{position:relative;display:flex;justify-content:space-between;font-size:12.5px;color:#7E8899;letter-spacing:.14em;font-family:'Cascadia Mono',monospace}
+.cn h1{position:relative;font-size:132px;line-height:1.0;letter-spacing:-.04em;font-weight:700;margin-top:auto}
+.cn .gold{position:relative;height:6px;width:180px;background:#E7B15C;margin:34px 0 30px;border-radius:3px}
+.cn .lead{position:relative;font-size:22px;color:#C7CEDA;line-height:1.6;max-width:900px}
+.cn .stamp{position:relative;margin-top:auto;display:flex;gap:44px;color:#8C97A8;font-size:13.5px}
+.cn .stamp b{color:#fff;font-weight:700;margin-right:7px}
+.cn .big{position:relative;margin:auto 0;display:flex;align-items:baseline;gap:30px}
+.cn .bignum{font-size:248px;line-height:.86;letter-spacing:-.05em;font-weight:700}
+.cn .bignum i{font-style:normal;color:#E7B15C}
+.cn .bigtxt{font-size:31px;line-height:1.35;font-weight:700;letter-spacing:-.01em}
+.cn .bigtxt small{display:block;font-size:15px;font-weight:400;color:#8C97A8;margin-top:14px;line-height:1.7;letter-spacing:0}
+.cn .three{position:relative;display:flex;gap:0;border-top:1px solid #232A34;margin-top:auto}
+.cn .three div{flex:1;padding:22px 24px 0 0}
+.cn .three b{display:block;font-size:46px;letter-spacing:-.03em;font-weight:700}
+.cn .three b i{font-style:normal;color:#E7B15C}
+.cn .three span{font-size:13px;color:#8C97A8;display:block;margin-top:7px}
+.cn .seven{position:relative;display:flex;gap:10px;margin:auto 0}
+.cn .seven div{flex:1}
+.cn .seven .num{font-size:62px;font-weight:700;letter-spacing:-.04em;line-height:1;color:#39404B}
+.cn .seven div:first-child .num,.cn .seven div:nth-child(2) .num{color:#E7B15C}
+.cn .seven .ti{font-size:15px;font-weight:700;margin-top:14px}
+.cn .seven .td{font-size:11.5px;color:#7E8899;margin-top:7px;line-height:1.5}
+.cn .kicker{position:relative;font-size:13px;color:#E7B15C;letter-spacing:.16em;font-family:'Cascadia Mono',monospace;margin-bottom:16px}
+</style>
+</head>
+<body>
+<div class="board">
+
+  <header class="bh">
+    <h1>产品介绍 · 四个视觉方向</h1>
+    <p>每个方向给三张真实样张：<b>封面 / 内容页 / 图表页</b>，用的都是同一套真实内容与数据（50 店 · 500 SKU · 42 项测试全通过 · 三类异常召回 100%）。四种方向在概念、配色、字体、版式策略上完全不同，选一个我就按它重做 20 页 PPTX。滚轮可缩放。</p>
+  </header>
+
+  <!-- ================= A ================= -->
+  <section class="grp">
+    <div class="gh"><span class="gcode">A</span><h2>编辑部风格</h2><span class="en">EDITORIAL</span></div>
+    <p class="gd">暖白纸底、衬线大标题、单一朱红强调色，靠字号与留白制造分量。像一本商业杂志的深度报道：一页一个观点，不堆卡片。适合偏沉稳、要「有判断」的场合。</p>
+    <ul class="gtags"><li>#F7F5F0 纸白</li><li>衬线标题 / 无衬线正文</li><li>单栏大留白</li><li>细线分隔</li></ul>
+    <div class="row">
+
+      <figure class="cell">
+        <figcaption><b>封面</b><span>1440 × 810</span></figcaption>
+        <div class="scr ed"><div class="pad">
+          <div class="meta"><span>RETAIL DECISION AGENT</span><span>产品介绍 · V2.0</span></div>
+          <div class="hr"></div>
+          <div class="mid">
+            <p class="kick">2026 年 9 月 30 日 · 面向全国连锁零售企业</p>
+            <h1 style="margin-top:26px">零售经营决策系统</h1>
+            <p class="lead">把「发现 → 归因 → 建议 → 执行」做成一条可审计的自动闭环，<br>而不是再给门店加一张报表。</p>
+          </div>
+          <div class="hr t"></div>
+          <div class="foot">
+            <div><b>自动发现异常</b><span>统计检测主动扫描</span></div>
+            <div><b>根因分析</b><span>九类假设 + 证据链</span></div>
+            <div><b>补货 / 促销建议</b><span>约束检查 + ROI</span></div>
+            <div><b>授权范围内执行</b><span>低风险自动 · 高风险审批</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>内容页</b><span>1440 × 810</span></figcaption>
+        <div class="scr ed"><div class="pad">
+          <div class="meta"><span>02 / 能力总览</span><span>CAPABILITIES</span></div>
+          <div class="hr"></div>
+          <h2 style="margin-top:34px">五项能力<br>全部在真实系统里跑通</h2>
+          <p class="sub">不是演示动画，是同一套代码上有对应测试与实跑记录的结果。</p>
+          <div class="list">
+            <div class="rw"><span class="c">R1</span><span class="n">多系统接入</span><span class="e">六大 Mock 业务系统，统一 REST / OpenAPI 接入</span></div>
+            <div class="rw"><span class="c">R2</span><span class="n">自动发现异常</span><span class="e">统计检测主动扫描，三类注入异常召回率 100%（验收线 90%）</span></div>
+            <div class="rw"><span class="c">R3</span><span class="n">分析原因</span><span class="e">九类假设并行验证，根因 Top3 命中率 100%（验收线 80%）</span></div>
+            <div class="rw"><span class="c">R4</span><span class="n">补货 / 促销建议</span><span class="e">根因 × 打法库生成建议，约束违反率 0</span></div>
+            <div class="rw"><span class="c">R5</span><span class="n">授权范围内执行</span><span class="e">自动执行成功率 100%，高风险审批合规率 100%</span></div>
+          </div>
+          <div class="nums">
+            <div><b>42</b><span>测试项全部通过</span></div>
+            <div><b>50</b><span>门店 · 5 大区 11 城</span></div>
+            <div><b>500</b><span>SKU · 20 品类</span></div>
+            <div><b>165 万</b><span>销售行 · 180 天</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>图表页</b><span>1440 × 810</span></figcaption>
+        <div class="scr ed"><div class="pad">
+          <div class="meta"><span>07 / 工作方式</span><span>THE LOOP</span></div>
+          <div class="hr"></div>
+          <h2 style="margin-top:34px">一条异常，七个环节<br>环环相扣</h2>
+          <p class="sub">从被发现，到被验证改善。每一步都留下可审计的痕迹。</p>
+          <div class="tl">
+            <div class="it"><span class="no">01</span><div><div class="ti">目标</div><div class="td">四条业务目标：保销售、提效率、增会员、控风险</div></div></div>
+            <div class="it"><span class="no">05</span><div><div class="ti">执行</div><div class="td">低风险自动执行，高风险一律转人工，幂等可补偿</div></div></div>
+            <div class="it"><span class="no">02</span><div><div class="ti">感知</div><div class="td">滚动中位数 + MAD 建基线，连续偏离即定为异常段</div></div></div>
+            <div class="it"><span class="no">06</span><div><div class="ti">治理</div><div class="td">执行前二次校验，L3 风控审批，全程写审计日志</div></div></div>
+            <div class="it"><span class="no">03</span><div><div class="ti">诊断</div><div class="td">九类假设并行验证，证据 ≥2 条方入选 Top3</div></div></div>
+            <div class="it"><span class="no">07</span><div><div class="ti">评估</div><div class="td">因果模型推演 T+N，对比执行前后 7 天真实指标</div></div></div>
+            <div class="it"><span class="no">04</span><div><div class="ti">决策</div><div class="td">根因 × 打法库，约束检查通过后附 ROI 估算</div></div></div>
+            <div class="it"><span class="no">—</span><div><div class="ti" style="color:#C0392B">结果可被验证</div><div class="td">感知召回 100% · 根因命中 100% · 约束违反 0</div></div></div>
+          </div>
+        </div></div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ================= B ================= -->
+  <section class="grp">
+    <div class="gh"><span class="gcode">B</span><h2>深色数据台</h2><span class="en">DARK CONSOLE</span></div>
+    <p class="gd">深石板底 + 青绿强调色 + 等宽数字，把产品讲成一个「正在运行的控制台」。信息密度高、边框代替阴影、强调色只给关键数字。适合技术评审，显得工具感强、可信。</p>
+    <ul class="gtags"><li>#0D1117 深底</li><li>#2FD4A0 青绿强调</li><li>等宽数字</li><li>细网格 / 1px 描边</li></ul>
+    <div class="row">
+
+      <figure class="cell">
+        <figcaption><b>封面</b><span>1440 × 810</span></figcaption>
+        <div class="scr dk"><div class="pad">
+          <div class="bar"><span><i class="dot"></i>AGENT ONLINE</span><span>零售经营决策系统 / V2.0</span></div>
+          <div style="margin:auto 0">
+            <h1>零售<span class="accent">经营决策</span><br>系统</h1>
+            <div class="glow"></div>
+            <p class="lead">自动发现异常 → 根因分析 → 补货 / 促销建议 → 授权范围内执行。<br>LLM 只叙述，不计算；高风险动作 100% 转人工。</p>
+          </div>
+          <div class="metrics">
+            <div><b>42</b><span>测试项全通过</span></div>
+            <div><b>100%</b><span>异常召回率</span></div>
+            <div><b>100%</b><span>根因命中率</span></div>
+            <div><b>0</b><span>约束违反率</span></div>
+            <div><b>165 万</b><span>销售行</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>内容页</b><span>1440 × 810</span></figcaption>
+        <div class="scr dk"><div class="pad">
+          <div class="bar"><span>02 — CAPABILITIES</span><span>SIM 50 STORES / 500 SKU / 180D</span></div>
+          <h2 style="margin-top:34px">五项核心能力<br>全部有真实数据佐证</h2>
+          <p class="sub">$ run --pipeline → perception / diagnosis / decision / execution</p>
+          <div class="cards">
+            <div class="cd"><div class="c">R1</div><div class="n">多系统接入</div><div class="e">六大 Mock 业务系统，统一 REST / OpenAPI 接口</div></div>
+            <div class="cd hot"><div class="c">R2 · 100%</div><div class="n">自动发现异常</div><div class="e">统计检测主动扫描，3/3 故事线检出（线 90%）</div></div>
+            <div class="cd hot"><div class="c">R3 · 100%</div><div class="n">分析原因</div><div class="e">九类假设并行验证，每根因 ≥2 条证据（线 80%）</div></div>
+            <div class="cd hot"><div class="c">R4 · 0</div><div class="n">补货 / 促销建议</div><div class="e">MOQ / 毛利 / 预算约束全部通过</div></div>
+            <div class="cd hot"><div class="c">R5 · 100%</div><div class="n">授权范围内执行</div><div class="e">自动执行成功，高风险无一例绕过人工</div></div>
+          </div>
+          <div class="strip">
+            <div><b>39 + 3</b><span>单元 / 集成 / 端到端</span></div>
+            <div><b>3</b><span>条异常故事线</span></div>
+            <div><b>1.6M</b><span>销售明细行</span></div>
+            <div><b>0.5s</b><span>单次扫描</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>图表页</b><span>1440 × 810</span></figcaption>
+        <div class="scr dk"><div class="pad">
+          <div class="bar"><span>07 — THE LOOP</span><span>TRACE_ID / 全链路可审计</span></div>
+          <h2 style="margin-top:34px">七个环节，一条 trace 串到底</h2>
+          <p class="sub">$ trace trc_3d5612cd181f --steps=7</p>
+          <div style="flex:1"></div>
+          <div class="flow">
+            <div class="st"><div class="no">01</div><div class="ti">目标</div><div class="td">四条业务目标与指标字典</div><span class="tag">13 指标</span></div>
+            <div class="st on"><div class="no">02</div><div class="ti">感知</div><div class="td">中位数 + MAD，连续偏离即异常</div><span class="tag">无需人工</span></div>
+            <div class="st on"><div class="no">03</div><div class="ti">诊断</div><div class="td">九类假设，证据 ≥2 条</div><span class="tag">Top3 根因</span></div>
+            <div class="st on"><div class="no">04</div><div class="ti">决策</div><div class="td">打法库匹配 + 约束检查</div><span class="tag">违反率 0</span></div>
+            <div class="st on"><div class="no">05</div><div class="ti">执行</div><div class="td">幂等写入，失败可补偿</div><span class="tag">状态机</span></div>
+            <div class="st on"><div class="no">06</div><div class="ti">治理</div><div class="td">二次校验 + L3 审批</div><span class="tag">合规 100%</span></div>
+            <div class="st on"><div class="no">07</div><div class="ti">评估</div><div class="td">T+N 推演，前后 7 天对比</div><span class="tag">真实指标</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ================= C ================= -->
+  <section class="grp">
+    <div class="gh"><span class="gcode">C</span><h2>蓝图工程</h2><span class="en">BLUEPRINT</span></div>
+    <p class="gd">浅蓝图纸底 + 网格 + 深蓝线框，模块带编号、箭头带尺寸标注，截图嵌进「图纸窗口」。像一份技术说明书，把架构讲清楚是唯一目标。适合架构汇报、给技术方看。</p>
+    <ul class="gtags"><li>#EDF1F6 图纸底</li><li>40px 网格</li><li>深蓝线框 #0F2E55</li><li>橙红标注 #E8590C</li></ul>
+    <div class="row">
+
+      <figure class="cell">
+        <figcaption><b>封面</b><span>1440 × 810</span></figcaption>
+        <div class="scr bp"><div class="pad">
+          <div class="bar"><span>PRODUCT WHITEPAPER / V2.0</span><span>2026-09-30</span></div>
+          <div style="margin:auto 0">
+            <h1>零售经营决策系统</h1>
+            <p class="lead">单体服务 · 分域设计：六大业务系统提供事实，Agent 四层推理，治理层贯穿所有写入路径。</p>
+            <div class="win">
+              <span class="lbl">FIG. 0 — 职责边界</span>
+              <div style="display:flex;justify-content:space-between;font-size:13.5px;color:#4A6484">
+                <span><span class="mark">◇</span> 事实来自业务系统</span>
+                <span><span class="mark">◇</span> 判断来自 Agent</span>
+                <span><span class="mark">◇</span> 控制来自治理层</span>
+                <span><span class="mark">◇</span> 叙述来自 LLM（不参与计算）</span>
+              </div>
+            </div>            <div class="win" style="margin-top:22px">
+              <span class="lbl">FIG. 1 — 闭环路径</span>
+              <div style="display:flex;align-items:center;font-size:13px;color:#4A6484">
+                <span style="color:#0F2E55;font-weight:700">自动发现异常</span><span style="color:#A9BCD2;padding:0 14px">→</span>
+                <span style="color:#0F2E55;font-weight:700">根因分析</span><span style="color:#A9BCD2;padding:0 14px">→</span>
+                <span style="color:#0F2E55;font-weight:700">补货 / 促销建议</span><span style="color:#A9BCD2;padding:0 14px">→</span>
+                <span style="color:#0F2E55;font-weight:700">授权范围内执行</span>
+                <span style="margin-left:auto;font-family:'Cascadia Mono',monospace;font-size:12px;color:#5A7089">低风险自动 · 高风险一律转人工</span>
+              </div>
+            </div>
+          </div>
+          <div class="dim"><span>A</span><i></i><span>50 门店 · 500 SKU · 180 天 · 42 项测试全通过</span><i></i><span>B</span></div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>内容页</b><span>1440 × 810</span></figcaption>
+        <div class="scr bp"><div class="pad">
+          <div class="bar"><span>02 / CAPABILITIES</span><span>REQ R1–R5</span></div>
+          <h2 style="margin-top:30px">五项能力与验收证据</h2>
+          <p class="sub">每项能力对应可复现的命令与实测结果</p>
+          <div class="grid5">
+            <div class="blk"><div class="no">R1</div><div class="n">多系统接入</div><div class="e">六大 Mock 业务系统；接口实测全部返回真实数据</div></div>
+            <div class="blk hot"><div class="no">R2 · 100%</div><div class="n">自动发现异常</div><div class="e">3/3 故事线检出；验收线 &gt; 90%</div></div>
+            <div class="blk hot"><div class="no">R3 · 100%</div><div class="n">分析原因</div><div class="e">每根因 ≥ 2 条证据；验收线 &gt; 80%</div></div>
+            <div class="blk hot"><div class="no">R4 · 0</div><div class="n">补货 / 促销建议</div><div class="e">约束违反率 0；MOQ / 毛利 / 预算全通过</div></div>
+            <div class="blk hot"><div class="no">R5 · 100%</div><div class="n">授权范围内执行</div><div class="e">超标动作全部转人工，无一例绕过</div></div>
+          </div>
+          <div class="tb" style="margin-top:26px">
+            <span class="lbl">TAB. 1 — 复现命令与结果</span>
+            <table>
+              <thead><tr><th style="width:29%">验收项</th><th style="width:15%">验收线</th><th style="width:34%">实测</th><th>复现命令</th></tr></thead>
+              <tbody>
+                <tr><td>三类注入异常召回率</td><td>&gt; 90%</td><td>100%（3/3 故事线检出）</td><td>pytest tests/test_perception.py</td></tr>
+                <tr><td>根因 Top3 命中率</td><td>&gt; 80%</td><td>100%，每根因 ≥2 条证据</td><td>pytest tests/test_agent_pipeline.py</td></tr>
+                <tr><td>建议约束违反率</td><td>= 0</td><td>0（覆盖天数 / MOQ / 毛利 / 预算全通过）</td><td>pytest tests/test_agent_pipeline.py::test_3</td></tr>
+                <tr><td>高风险审批合规率</td><td>= 100%</td><td>100%，L4 动作返回 403</td><td>pytest tests/test_governance.py</td></tr>
+                <tr><td>指标字典完整性</td><td>全部校验通过</td><td>13 指标 / 8 场景 / 8 角色 / 4 目标</td><td>python scripts/validate_metrics.py</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="base">
+            <div><b>42</b><span>测试项（单元 + 集成 + 端到端）</span></div>
+            <div><b>0</b><span>建议约束违反</span></div>
+            <div><b>100%</b><span>高风险审批合规率</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>图表页</b><span>1440 × 810</span></figcaption>
+        <div class="scr bp"><div class="pad">
+          <div class="bar"><span>07 / THE LOOP</span><span>FIG. 1</span></div>
+          <h2 style="margin-top:30px">目标—感知—诊断—决策—执行—治理—评估</h2>
+          <p class="sub">一条异常从被发现到被验证改善的完整生命周期</p>
+          <div class="tb" style="margin-top:28px">
+            <span class="lbl">TAB. 0 — 各环节的输入与产出</span>
+            <table>
+              <thead><tr><th style="width:9%">步骤</th><th style="width:19%">核心机制</th><th style="width:40%">输入 → 处理</th><th>产出</th></tr></thead>
+              <tbody>
+                <tr><td>感知</td><td>中位数 + MAD + z-score</td><td>42 天销售矩阵 → 前 28 天建基线，近 14 天逐日打分，连续 ≥2 天偏离成段</td><td>anomalies（含证据）</td></tr>
+                <tr><td>诊断</td><td>九类假设并行验证</td><td>只读工具取数（库存/单据/工单/促销/天气/竞品/复购）→ 证据 ≥2 条且方向相容者入选</td><td>diagnoses（Top3 根因）</td></tr>
+                <tr><td>决策</td><td>打法库 + 约束检查</td><td>异常类型 × 根因 → 构建动作参数 → MOQ / 毛利 / 预算校验 → ROI 估算</td><td>decision_cards</td></tr>
+                <tr><td>执行</td><td>状态机 + 幂等写入</td><td>低风险自动执行，高风险仅创建审批单；执行前 Policy 二次校验</td><td>executions（单据号）</td></tr>
+                <tr><td>治理</td><td>Policy Engine + HITL</td><td>L3 风控审批决定 → 通过后携带审批单号执行 → 全程写审计日志</td><td>approvals + audit_logs</td></tr>
+                <tr><td>评估</td><td>因果模型 T+N 推演</td><td>推演 T+7 后对比执行前后 7 天真实指标，更新策略权重</td><td>review_reports</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="dia" style="margin-top:26px">
+            <div class="nd"><div class="no">01</div><div class="ti">目标</div><div class="td">四条业务目标与指标字典</div></div>
+            <div class="nd"><div class="no">02</div><div class="ti">感知</div><div class="td">中位数 + MAD 建基线，连续偏离成段</div></div>
+            <div class="nd"><div class="no">03</div><div class="ti">诊断</div><div class="td">九类假设并行，证据 ≥2 条入选</div></div>
+            <div class="nd"><div class="no">04</div><div class="ti">决策</div><div class="td">根因 × 打法库，约束检查 + ROI</div></div>
+            <div class="nd"><div class="no">05</div><div class="ti">执行</div><div class="td">低风险自动，高风险转人工</div></div>
+            <div class="nd"><div class="no">06</div><div class="ti">治理</div><div class="td">二次校验 + L3 审批 + 审计</div></div>
+            <div class="nd"><div class="no">07</div><div class="ti">评估</div><div class="td">T+N 推演，对比前后 7 天指标</div></div>
+          </div>
+          <div class="cap">
+            <span>FIG. 1 — 七步闭环；步骤 02–07 由编排器以同一 trace_id 串联</span>
+            <span>SCALE 1 : 1</span>
+          </div>
+        </div></div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ================= D ================= -->
+  <section class="grp">
+    <div class="gh"><span class="gcode">D</span><h2>巨字冲击</h2><span class="en">CINEMATIC</span></div>
+    <p class="gd">深墨底 + 暖金强调，每页只讲一件事：一个 200px 级别的数字或一句话，其余全部让位。像发布会现场，情绪与记忆点优先，适合大厅演示与销售开场。</p>
+    <ul class="gtags"><li>#0B0E12 墨底</li><li>#E7B15C 暖金</li><li>超大字级 248px</li><li>每页一个结论</li></ul>
+    <div class="row">
+
+      <figure class="cell">
+        <figcaption><b>封面</b><span>1440 × 810</span></figcaption>
+        <div class="scr cn"><div class="pad">
+          <div class="halo"></div><div class="halo2"></div>
+          <div class="bar"><span>RETAIL DECISION AGENT</span><span>2026</span></div>
+          <h1>让每一次<br>经营异常<br>都有人接得住</h1>
+          <div class="gold"></div>
+          <p class="lead">自动发现 · 根因可查 · 建议可算 · 执行可控 · 全程可审计</p>
+          <div class="stamp">
+            <span><b>50</b>门店</span><span><b>500</b>SKU</span><span><b>180</b>天数据</span><span><b>42</b>项测试全通过</span>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>内容页</b><span>1440 × 810</span></figcaption>
+        <div class="scr cn"><div class="pad">
+          <div class="halo"></div>
+          <div class="bar"><span>02 — 实证</span><span>SIM RUN</span></div>
+          <div class="kicker" style="margin-top:40px">一次真实运行</div>
+          <div class="big">
+            <div class="bignum">42</div>
+            <div class="bigtxt">项测试全部通过<small>单元、集成与端到端三类合计；同一套代码上跑出的结果，不是演示动画。</small></div>
+          </div>
+          <div class="three">
+            <div><b>100<i>%</i></b><span>三类注入异常召回率（验收线 90%）</span></div>
+            <div><b>100<i>%</i></b><span>根因 Top3 命中率（验收线 80%）</span></div>
+            <div><b>0</b><span>建议约束违反率</span></div>
+            <div><b>100<i>%</i></b><span>高风险审批合规率</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+      <figure class="cell">
+        <figcaption><b>图表页</b><span>1440 × 810</span></figcaption>
+        <div class="scr cn"><div class="pad">
+          <div class="halo2"></div>
+          <div class="bar"><span>07 — 工作方式</span><span>SEVEN STEPS</span></div>
+          <div class="kicker" style="margin-top:44px">一条异常的生命周期</div>
+          <h2 style="font-size:44px;letter-spacing:-.02em;font-weight:700;position:relative;line-height:1.2">七个环节，环环相扣</h2>
+          <div class="seven">
+            <div><div class="num">01</div><div class="ti">目标</div><div class="td">四条业务目标</div></div>
+            <div><div class="num">02</div><div class="ti">感知</div><div class="td">统计检测扫描</div></div>
+            <div><div class="num">03</div><div class="ti">诊断</div><div class="td">九类假设验证</div></div>
+            <div><div class="num">04</div><div class="ti">决策</div><div class="td">约束 + ROI</div></div>
+            <div><div class="num">05</div><div class="ti">执行</div><div class="td">低风险自动</div></div>
+            <div><div class="num">06</div><div class="ti">治理</div><div class="td">高风险转人工</div></div>
+            <div><div class="num">07</div><div class="ti">评估</div><div class="td">真实指标复盘</div></div>
+          </div>
+          <div class="three">
+            <div><b>100<i>%</i></b><span>召回率</span></div>
+            <div><b>100<i>%</i></b><span>根因命中率</span></div>
+            <div><b>0</b><span>约束违反率</span></div>
+            <div><b>100<i>%</i></b><span>审批合规率</span></div>
+          </div>
+        </div></div>
+      </figure>
+
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

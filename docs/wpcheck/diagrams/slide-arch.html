@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#fff; }
+  .canvas { width:1700px; padding:30px 40px 30px; background:#fff; }
+  .title { font-size:31px; font-weight:700; color:#0F2A4A; }
+  .subtitle { font-size:15px; color:#6B7A8D; margin-top:7px; }
+  .hrule { height:3px; background:linear-gradient(90deg,#1E4A8F 0%,#3E7BC4 45%,#E3EAF3 100%); margin:13px 0 20px; border-radius:2px; }
+
+  .band { border-radius:10px; padding:11px 16px 13px; }
+  .band + .band { margin-top:10px; }
+  .band-head { display:flex; align-items:baseline; gap:9px; margin-bottom:9px; }
+  .band-chip { font-size:10px; color:#fff; background:#1E4A8F; padding:2px 8px; border-radius:20px; letter-spacing:1px; flex:none; }
+  .band-title { font-size:12.5px; font-weight:700; color:#0F2A4A; }
+  .band-title .en { font-weight:400; color:#93A2B5; font-size:10px; margin-left:6px; }
+
+  .row { display:flex; gap:7px; align-items:stretch; }
+  .node { flex:1; border-radius:8px; padding:8px 9px; background:#fff; border:1.5px solid #CBD8E8; min-width:0; }
+  .node .n-t { font-size:12px; font-weight:700; color:#14304F; }
+  .node .n-s { font-size:9.5px; color:#6D7C8F; margin-top:4px; line-height:1.45; }
+
+  .band.front { background:#F7FAFF; border:1.5px solid #D5E2F2; }
+  .band.agent { background:#F5F9FE; border:1.5px solid #C9DAF0; }
+  .band.gov   { background:#FFF9F3; border:1.5px solid #F3D9C0; }
+  .band.data  { background:#F6FCF8; border:1.5px solid #CBE7D8; }
+  .band.front .band-chip { background:#2E6BB0; }
+  .band.gov   .band-chip { background:#B4703A; }
+  .band.data  .band-chip { background:#1E7A53; }
+
+  .flow-node { flex:1; border-radius:8px; padding:9px 7px; text-align:center; background:#fff;
+               border:1.5px solid #9FBEE3; min-width:0; }
+  .flow-node .f-n { display:inline-block; font-size:9.5px; color:#fff; background:#1E4A8F;
+                    border-radius:20px; padding:1px 8px; letter-spacing:.5px; }
+  .flow-node .f-t { font-size:12.5px; font-weight:700; color:#12365C; margin-top:6px; }
+  .flow-node .f-s { font-size:9.5px; color:#74849A; margin-top:5px; line-height:1.5; }
+  .arrow { align-self:center; color:#8FB3DC; font-size:15px; font-weight:700; flex:none; }
+  .foot-note { margin-top:8px; font-size:9.5px; color:#5A7291; background:#EEF4FC;
+               border-left:3px solid #7FA8D9; border-radius:0 4px 4px 0; padding:5px 9px; line-height:1.5; }
+
+  .gov-item { flex:1; background:#fff; border:1.5px solid #EFCDA9; border-radius:8px; padding:8px 9px; min-width:0; }
+  .gov-item .g-t { font-size:11.5px; font-weight:700; color:#8A4B14; }
+  .gov-item .g-s { font-size:9.5px; color:#8A7358; margin-top:4px; line-height:1.45; }
+
+  .data-item { flex:1; background:#fff; border:1.5px solid #BFE0CE; border-radius:8px; padding:7px 9px; min-width:0; }
+  .data-item .d-t { font-size:11px; font-weight:700; color:#155C3A; }
+  .data-item .d-s { font-size:9px; color:#5F7A6C; margin-top:3px; line-height:1.4; }
+
+  .side { display:flex; gap:10px; margin-top:10px; }
+  .panel { flex:1; border-radius:10px; padding:10px 13px; }
+  .panel.kb { background:#FBF8FF; border:1.5px solid #DCD0F0; }
+  .panel.llm { background:#F4FAFB; border:1.5px solid #C7E4EA; }
+  .panel h4 { font-size:11.5px; color:#3B2E5E; margin-bottom:6px; }
+  .panel.llm h4 { color:#14545F; }
+  .panel li { font-size:9.5px; color:#6C6484; line-height:1.65; list-style:none; padding-left:11px; position:relative; }
+  .panel.llm li { color:#4E6E74; }
+  .panel li:before { content:"▪"; position:absolute; left:0; color:#A48CD0; }
+  .panel.llm li:before { color:#6BB7C4; }
+  .mono { font-size:9.5px; color:#1E4A8F; background:#EAF2FC; padding:1px 4px; border-radius:3px; }
+</style>
+</head>
+<body>
+<div class="canvas" id="c">
+  <div class="title">零售经营决策 Agent · 系统分层架构</div>
+  <div class="subtitle">单体服务 · 分域设计：六大业务系统提供事实 → Agent 四层推理 → 治理层贯穿所有写入路径</div>
+  <div class="hrule"></div>
+
+  <div class="band front">
+    <div class="band-head"><span class="band-chip">接入</span>
+      <span class="band-title">经营控制台<span class="en">web/ · 原生 JS SPA，无构建步骤</span></span></div>
+    <div class="row">
+      <div class="node"><div class="n-t">经营总览</div><div class="n-s">KPI 卡 · 30 天趋势 · 门店排行</div></div>
+      <div class="node"><div class="n-t">异常中心</div><div class="n-s">自动发现列表 · 证据链详情</div></div>
+      <div class="node"><div class="n-t">补货 / 促销建议</div><div class="n-s">约束检查 · ROI 估算</div></div>
+      <div class="node"><div class="n-t">审批中心</div><div class="n-s">高风险动作人工确认</div></div>
+      <div class="node"><div class="n-t">执行记录</div><div class="n-s">状态机 · 业务单据</div></div>
+      <div class="node"><div class="n-t">审计日志</div><div class="n-s">trace_id 全链路还原</div></div>
+    </div>
+    <div class="foot-note">REST / OpenAPI：<span class="mono">GET /api/kpi/overview</span> · <span class="mono">GET /api/agent/anomalies</span> · <span class="mono">POST /api/agent/pipeline</span> · <span class="mono">GET /api/gov/audit-logs</span></div>
+  </div>
+
+  <div class="band agent">
+    <div class="band-head"><span class="band-chip">推理</span>
+      <span class="band-title">Agent 四层推理链路<span class="en">agents/ · 编排器编排，trace_id 贯穿全链路</span></span></div>
+    <div class="row">
+      <div class="flow-node"><span class="f-n">感知</span><div class="f-t">自动发现异常</div>
+        <div class="f-s">28 天滚动中位数 + MAD 基线<br>逐日 z-score 与偏差比例<br>连续 ≥2 天偏离即告警</div></div>
+      <div class="arrow">➜</div>
+      <div class="flow-node"><span class="f-n">诊断</span><div class="f-t">根因分析</div>
+        <div class="f-s">9 类假设并行验证<br>Top3 根因 + 置信度<br>每根因 ≥2 条证据</div></div>
+      <div class="arrow">➜</div>
+      <div class="flow-node"><span class="f-n">决策</span><div class="f-t">补货 / 促销建议</div>
+        <div class="f-s">根因 × 打法库匹配<br>MOQ / 毛利 / 预算约束<br>成本收益 + ROI 估算</div></div>
+      <div class="arrow">➜</div>
+      <div class="flow-node"><span class="f-n">执行</span><div class="f-t">授权范围内执行</div>
+        <div class="f-s">六大写工具 · 状态机<br>幂等键 + 可补偿<br>高风险转人工审批</div></div>
+    </div>
+    <div class="foot-note">只读工具层 agents/tools 是 Agent 全部数字的唯一来源；任何写操作一律经治理层校验，不做旁路。</div>
+  </div>
+
+  <div class="band gov">
+    <div class="band-head"><span class="band-chip">治理</span>
+      <span class="band-title">治理层（贯穿所有写入路径）<span class="en">governance/</span></span></div>
+    <div class="row">
+      <div class="gov-item"><div class="g-t">权限矩阵 L0–L4</div><div class="g-s">只读 → 建议 → 低风险写入 → 高风险写入 → 禁止</div></div>
+      <div class="gov-item"><div class="g-t">Policy Engine</div><div class="g-s">阈值 / 白名单 / L4 直接拒绝，规则库机器可读</div></div>
+      <div class="gov-item"><div class="g-t">审批流 HITL</div><div class="g-s">高风险 100% 转人工，L3 风控审批人决定</div></div>
+      <div class="gov-item"><div class="g-t">审计日志</div><div class="g-s">通过与拒绝同样留痕，trace_id 贯穿七层</div></div>
+      <div class="gov-item"><div class="g-t">幂等写入入口</div><div class="g-s">幂等键重放 · dry-run 预演 · 失败可补偿</div></div>
+    </div>
+  </div>
+
+  <div class="band data">
+    <div class="band-head"><span class="band-chip">事实</span>
+      <span class="band-title">六大业务系统（Mock 事实数据源，独立表域）<span class="en">services/ + /api/*</span></span></div>
+    <div class="row">
+      <div class="data-item"><div class="d-t">主数据</div><div class="d-s">门店 · 品类 · 商品</div></div>
+      <div class="data-item"><div class="d-t">销售</div><div class="d-s">门店 × SKU × 天</div></div>
+      <div class="data-item"><div class="d-t">库存供应链</div><div class="d-s">现货 · 在途 · 安全库存</div></div>
+      <div class="data-item"><div class="d-t">会员 CRM</div><div class="d-s">分层 · 复购 · 促销</div></div>
+      <div class="data-item"><div class="d-t">客服</div><div class="d-s">工单 · 回访任务</div></div>
+      <div class="data-item"><div class="d-t">外部数据</div><div class="d-s">天气 · 竞品 · 日历</div></div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="panel kb">
+      <h4>知识库 data/kb/（机器可读，治理与评估共同消费）</h4>
+      <li>metrics.yaml —— 指标字典 · 权限矩阵</li>
+      <li>policies.yaml —— 风险规则 · 审批阈值</li>
+      <li>root_causes.yaml —— 根因库 · 九类假设</li>
+      <li>playbooks.yaml —— 打法库 · 根因 × 动作</li>
+    </div>
+    <div class="panel llm">
+      <h4>大模型叙述层 agents/llm（可选，不参与计算）</h4>
+      <li>仅承担解释与叙述职责，不计算、不决策</li>
+      <li>全部数字来自工具返回的事实数据</li>
+      <li>防编造校验：叙述出现事实表外数字即回退模板</li>
+      <li>未配置 API Key 时自动使用离线模板，功能不受影响</li>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#fff; }
+  .canvas { width:1400px; padding:46px 52px 42px; background:#fff; }
+  .title { font-size:34px; font-weight:700; color:#0F2A4A; }
+  .subtitle { font-size:17px; color:#6B7A8D; margin-top:9px; }
+  .hrule { height:4px; background:linear-gradient(90deg,#1E4A8F 0%,#3E7BC4 45%,#E3EAF3 100%); margin:18px 0 26px; border-radius:2px; }
+
+  .wrap { display:flex; gap:18px; }
+  .col { flex:1; min-width:0; }
+  .col-head { font-size:16px; font-weight:700; color:#0F2A4A; padding-bottom:10px;
+              border-bottom:3px solid #D5E2F2; margin-bottom:14px; }
+  .col-head .en { font-size:12px; color:#93A2B5; font-weight:400; margin-left:6px; }
+
+  .card { border-radius:11px; padding:13px 15px; margin-bottom:12px; border:2px solid #CFDCEB;
+          background:#fff; }
+  .card .c-t { font-size:15px; font-weight:700; color:#14304F; }
+  .card .c-d { font-size:12.5px; color:#6D7C8F; margin-top:6px; line-height:1.6; }
+  .card .c-x { font-size:12px; color:#B0723A; margin-top:8px; line-height:1.55;
+               background:#FDF7F1; border-radius:5px; padding:6px 9px; }
+
+  .card.deny { border-color:#EFC3BE; background:#FFF8F7; }
+  .card.deny .c-t { color:#A33A2E; }
+  .card.deny .c-d { color:#9C7A75; }
+
+  .pill { display:inline-block; font-size:12px; padding:2px 10px; border-radius:20px; margin-right:7px; font-weight:700; }
+  .l0 { background:#EEF2F7; color:#5C6B7E; }
+  .l1 { background:#EAF3FB; color:#2C6BA8; }
+  .l2 { background:#E9F6EE; color:#1E7A53; }
+  .l3 { background:#FDF1E4; color:#B4703A; }
+  .l4 { background:#FBEAE8; color:#A33A2E; }
+
+  .foot { margin-top:22px; background:#F5F9FE; border:2px solid #C9DAF0; border-radius:13px; padding:17px 20px; }
+  .foot .h { font-size:16px; font-weight:700; color:#0F2A4A; margin-bottom:12px; }
+  .foot .r { font-size:13px; color:#5E7A9B; line-height:2.0; }
+</style>
+</head>
+<body>
+<div class="canvas" id="c">
+  <div class="title">风险规则与授权边界</div>
+  <div class="subtitle">Policy Engine 消费机器可读规则库；边界写死在策略里，不依赖执行者的自觉</div>
+  <div class="hrule"></div>
+
+  <div class="wrap">
+    <div class="col">
+      <div class="col-head">自动执行：低风险，Agent 授权范围内<span class="en">无需人工介入</span></div>
+      <div class="card">
+        <div class="c-t">常规补货</div>
+        <div class="c-d">覆盖天数 ≤21 天、数量向上取整到最小起订量倍数；补货量 = 日均缺口 × 覆盖天数。</div>
+        <div class="c-x">边界：覆盖天数超过 21 天 → 越界，转审批</div>
+      </div>
+      <div class="card">
+        <div class="c-t">小额促销 / 临期折价</div>
+        <div class="c-d">折扣 ≤10% 且预算 ≤1 万，且不触碰毛利底线；临期清理按剩余保质期与库存量择折扣档位。</div>
+        <div class="c-x">边界：折扣 &gt;10% 或预算 &gt;1 万 → 越界，转审批</div>
+      </div>
+      <div class="card">
+        <div class="c-t">客服回访任务</div>
+        <div class="c-d">针对客诉工单创建回访任务，任务下发后由门店执行整改。</div>
+        <div class="c-x">边界：涉及赔偿的处置 → 转人工审批</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-head">转人工审批：高风险，L3 风控审批人决定<span class="en">HITL</span></div>
+      <div class="card">
+        <div class="c-t">促销折扣超过 10%</div>
+        <div class="c-d">价格类动作直接影响毛利与品牌定位，必须由人判断是否为短期引流或长期损害。</div>
+      </div>
+      <div class="card">
+        <div class="c-t">促销 / 触达预算超过 1 万</div>
+        <div class="c-d">预算类动作涉及费用承诺，超出授权额度即转人工，避免 Agent 自主扩大投放。</div>
+      </div>
+      <div class="card">
+        <div class="c-t">任何价格变更</div>
+        <div class="c-d">价格是竞争与合规双重敏感项，不做自动执行，一律人工确认。</div>
+      </div>
+      <div class="card">
+        <div class="c-t">跨区域库存调拨</div>
+        <div class="c-d">调拨影响两个区域的库存与考核归属，需人工平衡双方利益。</div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-head">直接拒绝：L4 禁止动作<span class="en">策略层拦截，不进入审批</span></div>
+      <div class="card deny">
+        <div class="c-t">折扣超过 30%</div>
+        <div class="c-d">超出正常经营判断区间，直接拒绝执行并记审计日志。</div>
+      </div>
+      <div class="card deny">
+        <div class="c-t">预算超过 10 万</div>
+        <div class="c-d">重大费用支出不属于 Agent 权限范围，直接拒绝。</div>
+      </div>
+      <div class="card deny">
+        <div class="c-t">白名单外的动作</div>
+        <div class="c-d">Agent 只可调用登记在册的写工具，未登记动作一律拒绝执行。</div>
+      </div>
+      <div class="card" style="background:#F5F9FE; border-color:#C9DAF0;">
+        <div class="c-t" style="color:#12365C;">为什么拒绝也要写审计</div>
+        <div class="c-d">被拒绝的请求同样留痕，事后可回答「谁在什么时候试图做什么、被什么规则拦住」。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div class="h">权限等级 L0–L4 与角色分工</div>
+    <div class="r">
+      <span class="pill l0">L0 只读</span>匿名与未授权身份，写入一律拒绝 &nbsp;&nbsp;
+      <span class="pill l1">L1 建议</span>可查看建议，不可写入
+    </div>
+    <div class="r">
+      <span class="pill l2">L2 低风险写入</span>区域经理 / 店长 / 供应链计划员 / 会员运营 / 客服主管 / 总部运营 &nbsp;&nbsp;
+      <span class="pill l3">L3 高风险写入</span>风控审批人，唯一可处理高风险审批 &nbsp;&nbsp;
+      <span class="pill l4">L4 禁止</span>任何身份都不可执行
+    </div>
+    <div class="r" style="margin-top:4px;">
+      Agent 服务身份硬上限为 <b style="color:#12365C;">L2</b>：可自主执行低风险动作，任何高风险动作一律转人工审批，不存在「Agent 自己批自己」的路径。
+    </div>
+  </div>
+</div>
+</body>
+</html>

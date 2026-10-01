@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#fff; }
+  .canvas { width:1800px; padding:10px 10px 12px; background:#fff; }
+  .line { display:flex; align-items:stretch; gap:0; }
+  .line + .line { margin-top:14px; }
+  .step { flex:1; min-width:0; }
+  .step-body { border-radius:14px; border:2.5px solid #BBD2EC; background:#F8FBFF;
+               padding:15px 15px 16px; height:100%; display:flex; flex-direction:column; }
+  .step.hi .step-body { border-color:#7FA8D9; background:#EFF5FD; }
+  .step-no { display:inline-flex; align-items:center; justify-content:center;
+             width:30px; height:30px; border-radius:50%; background:#1E4A8F; color:#fff;
+             font-size:17px; font-weight:700; }
+  .step-t { font-size:23px; font-weight:700; color:#12365C; margin-top:10px; }
+  .step-d { font-size:15.5px; color:#6D7C8F; margin-top:9px; line-height:1.5; flex:1; }
+  .step-o { font-size:15px; color:#155C3A; margin-top:11px; line-height:1.4;
+            background:#F0F9F4; border-radius:8px; padding:8px 10px; border-left:4px solid #5FB58A; }
+  .sep { flex:none; width:26px; align-self:center; text-align:center; color:#98B9DE;
+         font-size:20px; font-weight:700; }
+  .spacer { flex:0 0 0; }
+</style>
+</head>
+<body>
+<div class="canvas" id="c">
+  <div class="line">
+    <div class="step"><div class="step-body">
+      <span class="step-no">1</span><div class="step-t">目标</div>
+      <div class="step-d">四条业务目标：保销售、提效率、增会员、控风险。</div>
+      <div class="step-o">13 项指标 · 8 类场景</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">2</span><div class="step-t">感知</div>
+      <div class="step-d">滚动中位数 + MAD 建基线，逐日算 z-score，连续偏离即定为异常段。</div>
+      <div class="step-o">无需人工发起</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">3</span><div class="step-t">诊断</div>
+      <div class="step-d">九类假设并行验证，只调只读工具取数，证据 ≥2 条方入选。</div>
+      <div class="step-o">Top3 根因 + 置信度</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">4</span><div class="step-t">决策</div>
+      <div class="step-d">按「异常类型 × 根因」匹配打法库，约束检查 + ROI 估算。</div>
+      <div class="step-o">约束违反率 0</div>
+    </div></div>
+  </div>
+
+  <div class="line">
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">5</span><div class="step-t">执行</div>
+      <div class="step-d">低风险自动执行；高风险一律转人工，幂等写入可补偿。</div>
+      <div class="step-o">状态机 · 幂等 · 补偿</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">6</span><div class="step-t">治理</div>
+      <div class="step-d">执行前二次校验；审批由 L3 风控决定；全程写审计日志。</div>
+      <div class="step-o">审批合规率 100%</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">7</span><div class="step-t">评估</div>
+      <div class="step-d">因果模型推演 T+N，对比执行前后 7 天真实指标。</div>
+      <div class="step-o">真实指标复盘</div>
+    </div></div>
+    <div class="spacer" style="flex:2.35"></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#fff; }
+  .canvas { width:1400px; padding:46px 52px 42px; background:#fff; }
+  .title { font-size:34px; font-weight:700; color:#0F2A4A; }
+  .subtitle { font-size:17px; color:#6B7A8D; margin-top:9px; }
+  .hrule { height:4px; background:linear-gradient(90deg,#1E4A8F 0%,#3E7BC4 45%,#E3EAF3 100%); margin:18px 0 26px; border-radius:2px; }
+
+  .line { display:flex; align-items:stretch; gap:0; }
+  .line + .line { margin-top:18px; }
+  .step { flex:1; min-width:0; }
+  .step-body { border-radius:12px; border:2px solid #BBD2EC; background:#F8FBFF;
+               padding:16px 16px 17px; height:100%; }
+  .step.hi .step-body { border-color:#7FA8D9; background:#EFF5FD; }
+  .step-no { display:inline-flex; align-items:center; justify-content:center;
+             width:26px; height:26px; border-radius:50%; background:#1E4A8F; color:#fff;
+             font-size:14px; font-weight:700; }
+  .step-t { font-size:18px; font-weight:700; color:#12365C; margin-top:10px; }
+  .step-d { font-size:13px; color:#6D7C8F; margin-top:9px; line-height:1.62; }
+  .step-o { font-size:12.5px; color:#155C3A; margin-top:11px; line-height:1.55;
+            background:#F0F9F4; border-radius:6px; padding:8px 10px; border-left:3px solid #5FB58A; }
+  .sep { flex:none; width:32px; align-self:center; text-align:center; color:#98B9DE;
+         font-size:22px; font-weight:700; }
+  .spacer { flex:0 0 0; }
+
+  .bottom { display:flex; gap:16px; margin-top:26px; }
+  .box { flex:1; border-radius:13px; padding:17px 19px; }
+  .box h4 { font-size:16px; margin-bottom:11px; }
+  .box li { font-size:13px; line-height:1.85; list-style:none; padding-left:15px; position:relative; }
+  .box li:before { content:"▸"; position:absolute; left:0; }
+  .box.gov { background:#FFF9F3; border:2px solid #F3D9C0; }
+  .box.gov h4 { color:#8A4B14; } .box.gov li { color:#8A7358; } .box.gov li:before { color:#D79452; }
+  .box.met { background:#F5F9FE; border:2px solid #C9DAF0; }
+  .box.met h4 { color:#12365C; } .box.met li { color:#5E7A9B; } .box.met li:before { color:#6E9BD4; }
+  .cap { font-size:12px; color:#9AAABD; margin-top:24px; text-align:right; }
+</style>
+</head>
+<body>
+<div class="canvas" id="c">
+  <div class="title">目标—感知—诊断—决策—执行—治理—评估：七步闭环</div>
+  <div class="subtitle">一条异常从被发现到被验证改善的完整生命周期，每一步都留下可审计的痕迹</div>
+  <div class="hrule"></div>
+
+  <div class="line">
+    <div class="step"><div class="step-body">
+      <span class="step-no">1</span><div class="step-t">目标</div>
+      <div class="step-d">四条业务目标：保销售、提效率、增会员、控风险；指标字典机器可读，治理与评估共同消费。</div>
+      <div class="step-o">13 项指标 · 8 类场景</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">2</span><div class="step-t">感知</div>
+      <div class="step-d">批量取 42 天销售矩阵，用前 28 天滚动中位数与 MAD 建立基线，近 14 天逐日计算 z-score 与偏差比例，连续偏离即识别为异常段。</div>
+      <div class="step-o">无需人工发起 · 证据即刻落库</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">3</span><div class="step-t">诊断</div>
+      <div class="step-d">对缺货、供应链延迟、促销、竞品促销、天气、客诉、会员流失、临期、价格九类假设并行验证，每类调用只读工具取数，证据 ≥2 条且方向相容者入选。</div>
+      <div class="step-o">Top3 根因 + 置信度 + 贡献占比</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">4</span><div class="step-t">决策</div>
+      <div class="step-d">按「异常类型 × 根因」匹配打法库生成建议卡；补货量按覆盖天数并向上取整到最小起订量，促销校验毛利底线、折扣上限与预算上限。</div>
+      <div class="step-o">约束违反率 0 · 附 ROI 估算</div>
+    </div></div>
+  </div>
+
+  <div class="line">
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">5</span><div class="step-t">执行</div>
+      <div class="step-d">低风险建议自动执行；超出 Agent 授权的高风险动作（折扣 &gt;10%、预算 &gt;1 万、跨区域调拨等）一律生成审批单转人工。</div>
+      <div class="step-o">状态机 · 幂等键 · 可补偿</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">6</span><div class="step-t">治理</div>
+      <div class="step-d">Policy Engine 在执行前二次校验（纵深防御），审批中心由 L3 风控审批人决定；全程写审计日志，同 trace_id 串起七层。</div>
+      <div class="step-o">高风险审批合规率 100%</div>
+    </div></div>
+    <div class="sep">➜</div>
+    <div class="step hi"><div class="step-body">
+      <span class="step-no">7</span><div class="step-t">评估</div>
+      <div class="step-d">世界因果模型推演 T+N，对比执行前后 7 天真实指标，给出复盘结论与原因，并更新策略权重，供后续决策参考。</div>
+      <div class="step-o">真实指标复盘，非文本相似度</div>
+    </div></div>
+    <div class="spacer" style="flex:2.1"></div>
+  </div>
+
+  <div class="bottom">
+    <div class="box gov">
+      <h4>治理不是事后合规，而是每一步的前置条件</h4>
+      <li>写入前：Policy Engine 定风险等级与审批要求</li>
+      <li>写入时：幂等键 + dry-run 预演，重复提交不重复下单</li>
+      <li>写入后：审计留痕；失败可补偿，库存与单据同步回退</li>
+      <li>高风险：Agent 服务身份上限 L2，L3 一律转人工</li>
+    </div>
+    <div class="box met">
+      <h4>每一步都可被验证，而不是被相信</h4>
+      <li>感知：召回率 100%（验收线 90%）</li>
+      <li>诊断：根因 Top3 命中率 100%（验收线 80%）</li>
+      <li>决策：建议约束违反率 0</li>
+      <li>执行：自动执行成功率 100%；高风险审批合规率 100%</li>
+    </div>
+  </div>
+  <div class="cap">数据来源：本机演示系统实跑（业务日期 2026-10-07，随机种子 42）</div>
+</div>
+</body>
+</html>

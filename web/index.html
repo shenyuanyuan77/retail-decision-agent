@@ -8,10 +8,12 @@
 </head>
 <body>
 
+<div class="drawer-mask" id="drawer-mask"></div>
+
 <div class="flex">
 
-  <!-- ═══════════ shadcn/ui 式侧栏 ═══════════ -->
-  <aside class="sidebar">
+  <!-- 侧栏 -->
+  <aside class="sidebar" id="sidebar">
     <a class="brand" href="#/overview">
       <span class="brand-mark">R</span>
       <span class="brand-text">零售经营决策<small>Agent Console</small></span>
@@ -26,7 +28,7 @@
         <svg viewBox="0 0 24 24"><path d="M9 21h6M10 17.5h4M12 3a6 6 0 0 0-3.4 10.9c.9.7 1.4 1.3 1.4 2.1h4c0-.8.5-1.4 1.4-2.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>补货 / 促销建议<span class="count warn" id="badge-decision"></span></a>
       <span class="nav-group">执行与治理</span>
       <a href="#/approvals" data-page="approvals">
-        <svg viewBox="0 0 24 24"><path d="M12 2l8 3.5v5.7c0 5-3.4 8.6-8 10.8-4.6-2.2-8-5.8-8-10.8V5.5L12 2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4 4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>审批中心<span class="count warn" id="badge-approval"></span></a>
+        <svg viewBox="0 0 24 24"><path d="M12 2l8 3.5v5.7c0 5-3.4 8.6-8 10.8-4.6-2.2-8-5.8-8-10.8V5.5L12 2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.5 12l2.4 2.4 4.6-4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>审批中心<span class="count warn pulse" id="badge-approval"></span></a>
       <a href="#/executions" data-page="executions">
         <svg viewBox="0 0 24 24"><path d="M6 4l13 8-13 8V4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>执行记录</a>
       <a href="#/audit" data-page="audit">
@@ -45,10 +47,13 @@
     </div>
   </aside>
 
-  <!-- ═══════════ 主区 ═══════════ -->
+  <!-- 主区 -->
   <div class="main-col">
 
     <header class="topbar">
+      <button class="btn ghost burger" id="burger" title="菜单">
+        <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
       <div class="crumbs">
         <span class="crumb">零售经营决策</span><span class="crumb-sep">/</span>
         <span class="crumb strong" id="crumb-page">经营总览</span>
@@ -61,12 +66,12 @@
         <button class="btn ghost" onclick="route()" title="刷新">
           <svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <button class="btn ghost" onclick="runScan()">▶ 扫描异常</button>
-        <button class="btn primary" onclick="runPipeline()">⚡ 运行 Agent</button>
+        <button class="btn ghost" id="btn-scan" onclick="runScan(this)">▶ 扫描异常</button>
+        <button class="btn primary" id="btn-pipeline" onclick="runPipeline(this)">⚡ 运行 Agent</button>
       </div>
     </header>
 
-    <main id="main" class="page"><div class="loading">加载中…</div></main>
+    <main id="main" class="page"><div class="loading"><div class="spin-ring"></div>加载中…</div></main>
 
     <footer class="footer-note">
       零售经营决策 Agent · 接入门店 / 会员 / 供应链 / 客服系统 · 自动发现销量异常 → 根因分析 → 补货/促销建议 → 授权执行

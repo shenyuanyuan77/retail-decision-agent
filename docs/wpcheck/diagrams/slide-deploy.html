@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Microsoft YaHei","微软雅黑",sans-serif; background:#fff; }
+  .canvas { width:1700px; padding:30px 40px 30px; background:#fff; }
+  .title { font-size:31px; font-weight:700; color:#0F2A4A; }
+  .subtitle { font-size:15px; color:#6B7A8D; margin-top:7px; }
+  .hrule { height:3px; background:linear-gradient(90deg,#1E4A8F 0%,#3E7BC4 45%,#E3EAF3 100%); margin:13px 0 20px; border-radius:2px; }
+
+  .lanes { display:flex; gap:12px; margin-bottom:20px; }
+  .lane { flex:1; border-radius:11px; padding:14px 16px; border:2px solid #CFDCEB; background:#FAFCFF; }
+  .lane h4 { font-size:14px; color:#12365C; margin-bottom:10px; }
+  .lane .li { font-size:11.5px; color:#61758E; line-height:1.8; }
+  .lane .li b { color:#14304F; }
+  .lane .cmdx { margin-top:9px; font-size:11px; background:#EEF4FC; border-left:4px solid #7FA8D9;
+                border-radius:0 5px 5px 0; padding:8px 10px; color:#1E4A8F; line-height:1.7; }
+
+  .sect { font-size:14.5px; font-weight:700; color:#0F2A4A; margin-bottom:10px; }
+  table { width:100%; border-collapse:collapse; }
+  th { background:#1E4A8F; color:#fff; font-size:12.5px; font-weight:700; text-align:left; padding:9px 12px; }
+  th:first-child { border-radius:8px 0 0 0; } th:last-child { border-radius:0 8px 0 0; }
+  td { font-size:12px; color:#4E6379; padding:9px 12px; border-bottom:1px solid #E4EBF3; }
+  tr:nth-child(even) td { background:#FAFCFE; }
+  td.k { color:#14304F; font-weight:700; }
+  .tag { display:inline-block; font-size:11px; padding:2px 9px; border-radius:20px; background:#E9F6EE; color:#1E7A53; font-weight:700; }
+  .stat { display:flex; gap:12px; margin-top:18px; }
+  .st { flex:1; border-radius:11px; padding:13px 12px; background:#F5F9FE; border:2px solid #C9DAF0; text-align:center; }
+  .st .v { font-size:24px; font-weight:700; color:#1E4A8F; }
+  .st .l { font-size:11.5px; color:#6D7C8F; margin-top:5px; line-height:1.5; }
+</style>
+</head>
+<body>
+<div class="canvas" id="c">
+  <div class="title">部署形态与交付验收</div>
+  <div class="subtitle">本地零配置可跑通全链路；在线只读预览供外部查看，写操作需本地运行 · 验收指标来自本机实跑</div>
+  <div class="hrule"></div>
+
+  <div class="lanes">
+    <div class="lane">
+      <h4>一键脚本（推荐）</h4>
+      <div class="li">首次启动自动安装依赖并生成演示数据，约 1 分钟。</div>
+      <div class="cmdx">Windows：scripts\start.bat<br>macOS / Linux：bash scripts/start.sh</div>
+    </div>
+    <div class="lane">
+      <h4>容器</h4>
+      <div class="li">适用于容器化环境与 CI，无需本机 Python 环境。</div>
+      <div class="cmdx">docker compose up --build</div>
+    </div>
+    <div class="lane">
+      <h4>手动</h4>
+      <div class="li">便于二次开发与调试，可指定数据规模与随机种子。</div>
+      <div class="cmdx">pip install -r backend/requirements.txt<br>python scripts/generate.py<br>python -m uvicorn app.main:app --port 8300</div>
+    </div>
+    <div class="lane" style="background:#FFF9F3; border-color:#F3D9C0;">
+      <h4 style="color:#8A4B14;">访问入口</h4>
+      <div class="li" style="color:#8A7358;">控制台 <b style="color:#8A4B14;">http://127.0.0.1:8300</b>；接口文档 <b style="color:#8A4B14;">/docs</b>（Swagger UI）。</div>
+      <div class="li" style="color:#8A7358; margin-top:8px;">在线只读预览（GitHub Pages 快照）：无后端时自动降级为数据快照，运行 Agent、审批、执行需本地启动。</div>
+    </div>
+  </div>
+
+  <div class="sect">验收结果（本机实跑）</div>
+  <table>
+    <tr><th style="width:32%">验收项</th><th style="width:24%">验收线</th><th style="width:32%">实测</th><th>状态</th></tr>
+    <tr><td class="k">三类注入异常召回率</td><td>&gt; 90%</td><td>100%（3/3 故事线检出）</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">根因 Top3 命中率</td><td>&gt; 80%</td><td>100%，每根因 ≥2 条证据</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">建议约束违反率</td><td>= 0</td><td>0（MOQ / 毛利 / 预算全通过）</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">高风险审批合规率</td><td>= 100%</td><td>100%（超标动作全部转人工）</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">自动执行成功率</td><td>= 100%</td><td>100%</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">测试套件（单元 + 集成 + 端到端）</td><td>全部通过</td><td>42 项全部通过</td><td><span class="tag">通过</span></td></tr>
+    <tr><td class="k">LLM 叙述防编造校验</td><td>数字全部来自事实</td><td>真实模型实测通过，越界数字自动回退模板</td><td><span class="tag">通过</span></td></tr>
+  </table>
+
+  <div class="stat">
+    <div class="st"><div class="v">50</div><div class="l">门店<br>5 大区 11 城</div></div>
+    <div class="st"><div class="v">500</div><div class="l">SKU<br>20 品类 × 25</div></div>
+    <div class="st"><div class="v">165 万</div><div class="l">销售行<br>门店 × SKU × 天</div></div>
+    <div class="st"><div class="v">180 天</div><div class="l">数据时间窗<br>可推演 T+N</div></div>
+    <div class="st"><div class="v">42</div><div class="l">随机种子<br>完全可重复</div></div>
+  </div>
+</div>
+</body>
+</html>
